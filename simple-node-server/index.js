@@ -125,24 +125,44 @@ app.get('/isTodayPublicHoliday', (req, res) => {
       });
 })
 
-app.post('/provaPOST', (req, res) => {
-  const anno = req.body.year
+// nextPublicHolidays
+app.get('/nextPublicHolidays', (req, res) => {
   let config = {
-    method: 'get',
-    maxBodyLength: Infinity,
-    url: `${baseURL}longWeekend/${year}/${countryCode}`,
-    headers: { 
-      'accept': 'text/plain'
-    }
-  };
-  axios.request(config)
-      .then((response) => {
-        console.log(JSON.stringify(response.data, null, 2));
-        res.send(response.data)
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: `${baseURL}nextPublicHolidays/${countryCode}`,
+      headers: { 
+        'accept': 'text/json'
+      }
+    };
+    axios.request(config)
+    .then((response) => {
+      console.log(JSON.stringify(response.data, null, 2));
+      res.send(response.data)
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+})
+
+// nextPublicHoliday
+app.get('/nextPublicHoliday', (req, res) => {
+  let config = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: `${baseURL}nextPublicHolidays/${countryCode}`,
+      headers: { 
+        'accept': 'text/json'
+      }
+    };
+    axios.request(config)
+    .then((response) => {
+      console.log(JSON.stringify(response.data[0], null, 2));
+      res.send(response.data[0])
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 })
 
 app.listen(port, () => console.log(`Hello world app listening on port ${port}!`))

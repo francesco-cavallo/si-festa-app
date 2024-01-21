@@ -1,0 +1,16 @@
+countryInfo =           Questa API restituisce un elenco di informazioni riguardo la nazione scelta: 
+                        - Nome ufficiale
+                        - Nome comune
+                        - Sigla
+                        - Regione
+                        - Confini
+
+longWeekend =           Questa API restituisce l'elenco di tutti i "weekend lunghi" dell'anno impostato,
+                        specificando se servono uno o due giorni di ferie
+
+publicHolidays =        Questa API restituisce l'elenco delle festività nazionali per l'anno impostato
+
+isTodayPublicHoliday =  Questa API dice se il giorno attuale è un festivo oppure no
+
+nextPublicHolidays =    Questa API restituisce l'elenco delle prossime 10 festività nazionali
+nextPublicHoliday =     Questa API restituisce la prossima festività nazionale

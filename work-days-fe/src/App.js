@@ -64,6 +64,7 @@ function App() {
       </Navbar>
       <Card>
         <Card.Body>
+        <Button variant="primary" onClick={countryInfo}>Prova</Button>
           <Button variant="primary" onClick={countryInfo}>Country info (Italy only)</Button>
           <Button variant="primary" onClick={longWeekend}>Weekend lunghi (Italy only)</Button>
           <Button variant="primary" onClick={publicHolidays}>Feste nazionali (2024 - Italy only)</Button>

@@ -2,11 +2,8 @@
 import './App.css';
 import { useState } from "react";
 import Card from 'react-bootstrap/Card';
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 import Button from 'react-bootstrap/Button';
+import NavBar from './components/NavBar';
 
 const baseURL = 'http://localhost:3001'
 
@@ -40,28 +37,7 @@ function App() {
 
   return (
     <>
-      <Navbar expand="lg" className="bg-body-tertiary" sticky="top">
-        <Container>
-          <Navbar.Brand href="#home">Si Festa!</Navbar.Brand>
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-          <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="me-auto">
-              <Nav.Link href="#home">Home</Nav.Link>
-              <Nav.Link href="#publicHolidays">Feste nazionali</Nav.Link>
-              <Nav.Link href="#longWeekends">Weekend lunghi</Nav.Link>
-              <NavDropdown title="Altre funzioni" id="basic-nav-dropdown">
-                <NavDropdown.Item href="#action/3.2">
-                  Le prossime feste
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">
-                  È festa oggi?
-                </NavDropdown.Item>
-              </NavDropdown>
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
+      <NavBar/>
       <Card>
         <Card.Body>
         <Button variant="primary" onClick={countryInfo}>Prova</Button>

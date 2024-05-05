@@ -2,7 +2,7 @@ import { useState } from "react";
 
 export const Collapsible = () => {
     const [ open, setOpen ] = useState(false)
-    const toggle = () => {
+    const toggle = () => {
         setOpen(!open)
     }
     return(

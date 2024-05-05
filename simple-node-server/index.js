@@ -86,16 +86,18 @@ app.post('/longWeekend', (req, res) => {
 })
 
 // PublicHolidays
-app.get('/publicHolidays', (req, res) => {
+app.post('/publicHolidays', (req, res) => {
+    const anno = req.body.year
+    console.log('anno', anno)
     let config = {
         method: 'get',
         maxBodyLength: `Infinity`,
-        url: `${baseURL}PublicHolidays/${year}/${countryCode}`,
-        headers: { }
+        url: `${baseURL}PublicHolidays/${anno}/${countryCode}`,
+        headers: { 'accept': 'text/plain' }
       };
       axios.request(config)
       .then((response) => {
-        console.log(JSON.stringify(response.data, null, 2));
+        // console.log(JSON.stringify(response.data, null, 2));
         res.send(response.data)
       })
       .catch((error) => {

@@ -14,7 +14,9 @@ import Table from 'react-bootstrap/Table';
  */
 
 const LongWeekend = (props) => {
-    const { baseURL } = props
+    const { baseURL, 
+            giorni
+    } = props
     const currentYear = new Date().getFullYear()
     const [year, setYear] = useState(currentYear)
     const [res, setRes] = useState('')
@@ -35,9 +37,11 @@ const LongWeekend = (props) => {
     }
     const data = res && res.length ? res.map(elem => {
         const { startDate, endDate, needBridgeDay } = elem
+        const dataInizio = new Date(startDate)
+        const dataFine = new Date(endDate)
         return {
-            inizio: startDate,
-            fine: endDate,
+            inizio: `${startDate} - ${giorni.find(el => dataInizio.getDay() === el.value).name}`,
+            fine: `${endDate} - ${giorni.find(el => dataFine.getDay() === el.value).name}`,
             giornoFerie: JSON.stringify(needBridgeDay)
         }
     }) : ''

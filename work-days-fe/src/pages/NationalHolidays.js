@@ -1,22 +1,25 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Card } from 'react-bootstrap'
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Table from 'react-bootstrap/Table';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css"
 
 const NationalHolidays = (props) => {
-    const { baseURL } = props
+    const { baseURL,
+            giorni
+     } = props
     const currentYear = new Date().getFullYear()
     const [year, setYear] = useState(currentYear)
     const [res, setRes] = useState('')
-    console.log('year', year);
-    const handleChange = e => {
-        const target = e.target
-        setYear(target.value)
-    }
+    const [startDate, setStartDate] = useState(new Date())
+
     function publicHolidays() {
+        const tmp = startDate.getFullYear()
+        console.log(tmp);
         fetch(`${baseURL}/publicHolidays`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -29,23 +32,39 @@ const NationalHolidays = (props) => {
     }
     const data = res && res.length ? res.map(elem => {
         const { date, localName } = elem
+        const data = new Date(date)
         return {
-            giorno: date,
+            giorno: `${date} - ${giorni.find(el => data.getDay() === el.value).name}`,
             nome: localName
         }
     }) : ''
     console.log(data)
+    useEffect(() => {
+        console.log(startDate);
+        setYear(startDate.getFullYear())
+    }, [startDate])
     return (
         <>
             <Card border='primary'>
                 <Card.Body>
                     <Container fluid>
                         <Row>
-                            <Col sm>
+                            <Col sm={2}>
                                 <Button variant="primary" onClick={publicHolidays}>Feste nazionali (2024 - Italy only)</Button>
-                                <table>
-                                    <input type={'text'} name={"anno"} value={year} maxLength={4} onChange={handleChange} />
-                                </table>
+                            </Col>
+                            <Col sm={5}>
+                                {"Seleziona l'anno: "}
+                                <DatePicker
+                                    selected={startDate}
+                                    onChange={(date) => setStartDate(date)}
+                                    showYearPicker
+                                    dateFormat='yyyy'
+                                    style={{ width: '40px' }}
+                                />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col sm>
                                 <Table>
                                     <thead>
                                         <tr>

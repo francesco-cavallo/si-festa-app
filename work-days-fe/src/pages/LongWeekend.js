@@ -5,6 +5,9 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Table from 'react-bootstrap/Table';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css"
+import { useEffect } from 'react';
 
 /** TO DOS HERE
  *  fare intersezione tra le chiamate longWeekend e nationalHolidays
@@ -17,14 +20,14 @@ const LongWeekend = (props) => {
     const { baseURL, 
             giorni
     } = props
-    const currentYear = new Date().getFullYear()
-    const [year, setYear] = useState(currentYear)
+
+    const [year, setYear] = useState(new Date().getFullYear())
     const [res, setRes] = useState('')
-    const handleChange = e => {
-        const target = e.target
-        setYear(target.value)
-    }
+    const [startDate, setStartDate] = useState(new Date())
+
     function longWeekend() {
+        const tmp = startDate.getFullYear()
+        console.log(tmp);
         fetch(`${baseURL}/longWeekend`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -35,28 +38,46 @@ const LongWeekend = (props) => {
                 setRes(json)
             })
     }
+
     const data = res && res.length ? res.map(elem => {
         const { startDate, endDate, needBridgeDay } = elem
         const dataInizio = new Date(startDate)
         const dataFine = new Date(endDate)
+        const giornoFerie = needBridgeDay ? needBridgeDay === true ? 'Sì' : 'No' : 'No'
         return {
             inizio: `${startDate} - ${giorni.find(el => dataInizio.getDay() === el.value).name}`,
             fine: `${endDate} - ${giorni.find(el => dataFine.getDay() === el.value).name}`,
-            giornoFerie: JSON.stringify(needBridgeDay)
+            // giornoFerie: JSON.stringify(needBridgeDay)
+            giornoFerie
         }
     }) : ''
+
+    useEffect(() => {
+        console.log(startDate);
+        setYear(startDate.getFullYear())
+    }, [startDate])
+
     return (
         <>
             <Card border='primary'>
                 <Card.Body>
                     <Container fluid>
                         <Row>
-                            <Col sm>
+                            <Col sm={2}>
                                 <Button variant="primary" onClick={longWeekend}>Weekend lunghi (Italy only)</Button>
-                                <table>
-                                    <input type={'text'} name={"anno"} value={year} maxLength={4} onChange={handleChange} />
-                                    {/* <button onClick={availableCountries}>availableCountries (first only)</button> */}
-                                </table>
+                            </Col>
+                            <Col sm={5}>                            
+                                <DatePicker
+                                    selected={startDate}
+                                    onChange={(date) => setStartDate(date)}
+                                    showYearPicker
+                                    dateFormat='yyyy'
+                                    style={{ width: '40px' }}
+                                />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
                                 <Table>
                                     <thead>
                                         <tr>

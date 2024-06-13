@@ -30,6 +30,7 @@ const NationalHolidays = (props) => {
                 setRes(json)
             })
     }
+
     const data = res && res.length ? res.map(elem => {
         const { date, localName } = elem
         const data = new Date(date)
@@ -43,6 +44,12 @@ const NationalHolidays = (props) => {
         console.log(startDate);
         setYear(startDate.getFullYear())
     }, [startDate])
+
+    useEffect(() => {
+        publicHolidays()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     return (
         <>
             <Card border='primary'>

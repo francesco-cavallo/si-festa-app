@@ -57,7 +57,7 @@ const NationalHolidays = (props) => {
                     <Container fluid>
                         <Row>
                             <Col sm={2}>
-                                <Button variant="primary" onClick={publicHolidays}>Feste nazionali (2024 - Italy only)</Button>
+                                <Button variant="primary" onClick={publicHolidays}>Feste nazionali (Italy only)</Button>
                             </Col>
                             <Col sm={5}>
                                 {"Seleziona l'anno: "}

@@ -1,0 +1,9 @@
+- FE di nextHolidays
+- FE di isTodayHoliday
+- Implementare il selector delle nazioni
+- Homepage: mostrare a schermo il json dei bottoni:
+    - Country info --> OK
+    - È festa oggi
+    - Le prossime feste
+    - La prossima festa (localName + date)
+        - Formattare la data (bisogna installare momentJS)

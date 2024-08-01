@@ -78,42 +78,48 @@ const Homepage = (props) => {
 
     return (
         <>
-            <Card border='primary'>
-                <Card.Body>
-                    <Card.Title>Special title treatment</Card.Title>
-                    <Card.Text>
-                        With supporting text below as a natural lead-in to additional content.
-                    </Card.Text>
-                    <Container fluid>
-                        <Row>
-                            <Col sm={3}>
-                                <Button variant="primary" onClick={countryInfo}>Country info (Italy only)</Button>
-                            </Col>
-                            <Col sm={8}>
-                                {JSON.stringify(infoNazione)}
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col sm>
-                                <Button variant="primary" onClick={isTodayPublicHoliday}>È festa oggi? (Italy only)</Button>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col sm>
-                                <Button variant="primary" onClick={nextPublicHolidays}>Le prossime feste (Italy only)</Button>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col sm={3}>
-                                <Button variant="primary" onClick={nextPublicHoliday}>La prossima festa (Italy only)</Button>
-                            </Col>
-                            <Col sm={8}>
-                                {nextHoliday ? nextHoliday.localName + ' - ' + nextHoliday.date : undefined}
-                            </Col>
-                        </Row>
-                    </Container>
-                </Card.Body>
-            </Card>
+            <Container fluid>
+                <Row>
+                    <Col sm={12}>
+                        <Card border='primary'>
+                            <Card.Body>
+                                <Card.Title>Special title treatment</Card.Title>
+                                <Card.Text>
+                                    With supporting text below as a natural lead-in to additional content.
+                                </Card.Text>
+                                <Container fluid>
+                                    <Row style={{marginBottom: '20px'}}>
+                                        <Col sm={3}>
+                                            <Button variant="primary" onClick={countryInfo}>Country info (Italy only)</Button>
+                                        </Col>
+                                        <Col sm={8}>
+                                            {JSON.stringify(infoNazione)}
+                                        </Col>
+                                    </Row>
+                                    <Row style={{marginBottom: '20px'}}>
+                                        <Col sm>
+                                            <Button variant="primary" onClick={isTodayPublicHoliday}>È festa oggi? (Italy only)</Button>
+                                        </Col>
+                                    </Row>
+                                    {/* <Row>
+                                        <Col sm>
+                                            <Button variant="primary" onClick={nextPublicHolidays}>Le prossime feste (Italy only)</Button>
+                                        </Col>
+                                    </Row> */}
+                                    <Row>
+                                        <Col sm={3}>
+                                            <Button variant="primary" onClick={nextPublicHoliday}>La prossima festa (Italy only)</Button>
+                                        </Col>
+                                        <Col sm={8}>
+                                            {nextHoliday ? nextHoliday.localName + ' - ' + nextHoliday.date : undefined}
+                                        </Col>
+                                    </Row>
+                                </Container>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                </Row>
+            </Container>
         </>
     )
 }

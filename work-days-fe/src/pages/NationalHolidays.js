@@ -60,14 +60,22 @@ const NationalHolidays = (props) => {
                                 <Button variant="primary" onClick={publicHolidays}>Feste nazionali (Italy only)</Button>
                             </Col>
                             <Col sm={5}>
-                                {"Seleziona l'anno: "}
-                                <DatePicker
-                                    selected={startDate}
-                                    onChange={(date) => setStartDate(date)}
-                                    showYearPicker
-                                    dateFormat='yyyy'
-                                    style={{ width: '40px' }}
-                                />
+                            <Container fluid>
+                                <Row>
+                                    <Col sm={3}>
+                                        {"Seleziona l'anno: "}
+                                    </Col>
+                                    <Col sm={1}>
+                                        <DatePicker
+                                            selected={startDate}
+                                            onChange={(date) => setStartDate(date)}
+                                            showYearPicker
+                                            dateFormat='yyyy'
+                                            style={{ width: '40px' }}
+                                        />
+                                    </Col>
+                                </Row>
+                            </Container>
                             </Col>
                         </Row>
                         <Row>

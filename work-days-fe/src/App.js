@@ -8,9 +8,6 @@ import Footer from './components/Footer';
 import NationalHolidays from './pages/NationalHolidays';
 import LongWeekend from './pages/LongWeekend';
 
-// Da migliorare:
-//  magari l'input dell'anno può essere una select
-
 function App() {
 
   const baseURL = 'http://localhost:3001'

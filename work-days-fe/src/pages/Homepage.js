@@ -5,9 +5,13 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import moment from 'moment'
+import 'moment/locale/it'
 
 const Homepage = (props) => {
-    const { baseURL } = props
+    const { baseURL,
+            giorni
+     } = props
     // da rinominare
     const [res, setRes] = useState('')
     const [publicHoliday, setPublicHoliday] = useState('')
@@ -70,11 +74,12 @@ const Homepage = (props) => {
             })
     }
     const nextHoliday = publicHoliday && publicHoliday.length ? publicHoliday.map(elem => {
+        moment.locale('it')
+        elem.dataF = moment(elem.date).format('L')
+        elem.giorno = giorni.find(el => new Date(elem.date).getDay() === el.value).name
+        console.log(elem);
         return elem
     })[0] : undefined
-
-    const dataProva = nextHoliday ? new Date() : undefined
-    console.log(dataProva);
 
     return (
         <>
@@ -83,18 +88,45 @@ const Homepage = (props) => {
                     <Col sm={12}>
                         <Card border='primary'>
                             <Card.Body>
-                                <Card.Title>Special title treatment</Card.Title>
+                                <Card.Title>Prova una delle seguenti funzionalità:</Card.Title>
                                 <Card.Text>
-                                    With supporting text below as a natural lead-in to additional content.
+                                    <ul>
+                                        <li>
+                                            CountryInfo restituisce l'anagrafica dello stato italiano con i suoi confini
+                                        </li>
+                                        <li>
+                                            È festa oggi? mostra se oggi è festivo o meno
+                                        </li>
+                                        <li>
+                                            La prossima festa indica la prossima festività italiana
+                                        </li>
+                                    </ul>
                                 </Card.Text>
                                 <Container fluid>
                                     <Row style={{marginBottom: '20px'}}>
                                         <Col sm={3}>
                                             <Button variant="primary" onClick={countryInfo}>Country info (Italy only)</Button>
                                         </Col>
-                                        <Col sm={8}>
-                                            {JSON.stringify(infoNazione)}
-                                        </Col>
+                                        {infoNazione && <Col sm={8}>
+                                            {/* Continente */}
+                                            <Row>
+                                                {"Continente: " + infoNazione.continente}
+                                            </Row>
+                                            {/* Nome ufficiale */}
+                                            <Row>
+                                                {"Nome ufficiale: " + infoNazione.nomeUff}
+                                            </Row>
+                                            {/* Nome */}
+                                            <Row>
+                                                {"Nome: " + infoNazione.nome}
+                                            </Row>
+                                            {/* Confini */}
+                                            <Row>
+                                                {"Confini: " + infoNazione.confini.map(confine => {
+                                                    return `\n${confine.nome}`
+                                                })}
+                                            </Row>
+                                        </Col>}
                                     </Row>
                                     <Row style={{marginBottom: '20px'}}>
                                         <Col sm>
@@ -111,7 +143,7 @@ const Homepage = (props) => {
                                             <Button variant="primary" onClick={nextPublicHoliday}>La prossima festa (Italy only)</Button>
                                         </Col>
                                         <Col sm={8}>
-                                            {nextHoliday ? nextHoliday.localName + ' - ' + nextHoliday.date : undefined}
+                                            {nextHoliday ? nextHoliday.localName + ' (' + nextHoliday.dataF + ') - ' + nextHoliday.giorno  : undefined}
                                         </Col>
                                     </Row>
                                 </Container>

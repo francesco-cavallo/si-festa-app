@@ -7,6 +7,8 @@ import Col from 'react-bootstrap/Col';
 import Table from 'react-bootstrap/Table';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css"
+import moment from 'moment'
+import 'moment/locale/it'
 
 const NationalHolidays = (props) => {
     const { baseURL,
@@ -32,10 +34,12 @@ const NationalHolidays = (props) => {
     }
 
     const data = res && res.length ? res.map(elem => {
+        moment.locale('it')
         const { date, localName } = elem
         const data = new Date(date)
+        const dataF = moment(data).format('L')
         return {
-            giorno: `${date} - ${giorni.find(el => data.getDay() === el.value).name}`,
+            giorno: `${dataF} - ${giorni.find(el => data.getDay() === el.value).name}`,
             nome: localName
         }
     }) : ''

@@ -25,7 +25,7 @@ function App() {
     <>
       <NavBar />
       <Routes>
-        <Route path='/' element={<Homepage baseURL={baseURL} />} />
+        <Route path='/' element={<Homepage baseURL={baseURL} giorni={giorni} />} />
         <Route path='/publicHolidays' element={<NationalHolidays baseURL={baseURL} giorni={giorni} />} />
         <Route path='/longWeekends' element={<LongWeekend baseURL={baseURL} giorni={giorni} />} />
       </Routes>

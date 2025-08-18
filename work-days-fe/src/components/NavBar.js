@@ -1,37 +1,68 @@
-import React from 'react'
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import Container from 'react-bootstrap/Container';
-import './NavBar.css'
+// NavBar.js
+import React, { useState } from 'react';
+import { Navbar, Nav, NavDropdown, Container } from 'react-bootstrap';
+import { useLocation } from 'react-router-dom';
+import './NavBar.css';
 
 const NavBar = () => {
-  return (
-    <>
-        <Navbar expand="lg" className="bg-body-tertiary" sticky="top">
-            <Container>
-                <Navbar.Brand className="nav-title fw-semibold" href="/">Si Festa!</Navbar.Brand>
-                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-                <Navbar.Collapse id="responsive-navbar-nav">
-                    <Nav className="nav me-auto">
-                        <Nav.Link className="navbar-nav navlink fw-medium" href="/">Home</Nav.Link>
-                        <Nav.Link className="navbar-nav navlink fw-medium" href="/publicHolidays">Feste nazionali</Nav.Link>
-                        <Nav.Link className="navbar-nav navlink fw-medium" href="/longWeekends">Weekend lunghi</Nav.Link>
-                        <NavDropdown className="navbar-nav navlink fw-medium" title="Altre funzioni" id="basic-nav-dropdown">
-                            <NavDropdown.Item className='fw-medium' href="/nextHolidays">
-                                Le prossime feste
-                            </NavDropdown.Item>
-                            <NavDropdown.Divider />
-                            <NavDropdown.Item className='fw-medium' href="/isTodayHoliday">
-                                È festa oggi?
-                            </NavDropdown.Item>
-                        </NavDropdown>
-                    </Nav>
-                </Navbar.Collapse>
-            </Container>
-        </Navbar>
-    </>
-  )
-}
+  const location = useLocation();
+  const [expanded, setExpanded] = useState(false);
 
-export default NavBar
+  const handleToggle = () => setExpanded(!expanded);
+  const handleClose = () => setExpanded(false);
+
+  const isActive = (path) => location.pathname === path;
+
+  const isDropdownActive = location.pathname.includes('/nextHolidays') || location.pathname.includes('/isTodayHoliday');
+
+  return (
+    <Navbar expand="lg" className="bg-body-tertiary shadow-sm" sticky="top" expanded={expanded}>
+      <Container>
+        <Navbar.Brand className="nav-title fw-semibold" href="/" onClick={handleClose}>
+          Si Festa!
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" onClick={handleToggle} />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="ms-auto">
+            <Nav.Link
+              href="/"
+              className={`navlink fw-medium ${isActive('/') ? 'active' : ''}`}
+              onClick={handleClose}
+            >
+              Home
+            </Nav.Link>
+            <Nav.Link
+              href="/publicHolidays"
+              className={`navlink fw-medium ${isActive('/publicHolidays') ? 'active' : ''}`}
+              onClick={handleClose}
+            >
+              Feste nazionali
+            </Nav.Link>
+            <Nav.Link
+              href="/longWeekends"
+              className={`navlink fw-medium ${isActive('/longWeekends') ? 'active' : ''}`}
+              onClick={handleClose}
+            >
+              Weekend lunghi
+            </Nav.Link>
+            <NavDropdown
+                title="Altre funzioni"
+                id="basic-nav-dropdown"
+                className={`navlink fw-medium ${isDropdownActive ? 'active' : ''}`}
+            >
+                <NavDropdown.Item href="/nextHolidays" className="fw-medium" onClick={handleClose}>
+                    Le prossime feste
+                </NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item href="/isTodayHoliday" className="fw-medium" onClick={handleClose}>
+                    È festa oggi?
+                </NavDropdown.Item>
+            </NavDropdown>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+  );
+};
+
+export default NavBar;

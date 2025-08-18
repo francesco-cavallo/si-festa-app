@@ -1,0 +1,26 @@
+.fade-slide-content {
+  overflow: hidden;
+}
+
+.fade-slide-enter {
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-10px);
+}
+.fade-slide-enter-active {
+  max-height: 500px;
+  opacity: 1;
+  transform: translateY(0);
+  transition: max-height 300ms ease, opacity 300ms ease, transform 300ms ease;
+}
+.fade-slide-exit {
+  max-height: 500px;
+  opacity: 1;
+  transform: translateY(0);
+}
+.fade-slide-exit-active {
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: max-height 300ms ease, opacity 300ms ease, transform 300ms ease;
+}

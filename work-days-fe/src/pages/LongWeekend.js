@@ -20,8 +20,9 @@ import 'moment/locale/it'
  */
 
 const LongWeekend = (props) => {
-    const { baseURL, 
-            giorni
+    const { 
+        baseURL, 
+        giorni
     } = props
 
     const [year, setYear] = useState(new Date().getFullYear())
@@ -76,14 +77,17 @@ const LongWeekend = (props) => {
             {/* <Card border='primary'> */}
                 {/* <Card.Body> */}
                     <Container fluid>
+                        {/* Title */}
                         <Row>
                             <Col>
                             <h3>{'Weekend lunghi permette di trovare tutti i "finesettimana lunghi" dell\'anno scelto'}</h3>
                             </Col>
                         </Row>
+                        {/* Blank space */}
                         <Row>
                             <Col><p></p></Col>
                         </Row>
+                        {/* Button to call API + DatePicker */}
                         <Row>
                             <Col lg={3} md={4} sm={12} xs={12}>
                                 <Button variant="primary" onClick={longWeekend}>Weekend lunghi (Italy only)</Button>
@@ -99,9 +103,11 @@ const LongWeekend = (props) => {
                                 />
                             </Col>
                         </Row>
+                        {/* Blank space */}
                         <Row>
                             <Col><p></p></Col>
                         </Row>
+                        {/* Table */}
                         <Row>
                             <Col>
                                 <Table responsive>

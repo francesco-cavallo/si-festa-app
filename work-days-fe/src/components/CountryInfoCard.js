@@ -10,9 +10,10 @@ const CountryInfoCard = ({ baseURL }) => {
   const fetchCountryInfo = () => {
     setLoading(true);
     fetch(`${baseURL}/countryInfo`)
-      .then(res => res.json())
+      .then(res => res.json()
+      )
       .then(json => {
-        const elem = json[0];
+        const elem = json;
         const confini = elem.borders.map(b => ({
           continente: b.region,
           nomeUff: b.officialName,
@@ -37,6 +38,7 @@ const CountryInfoCard = ({ baseURL }) => {
       buttonText="Ottieni Info"
       buttonVariant="primary"
       onClick={fetchCountryInfo}
+      loading={loading}
     >
       {infoNazione && (
         <div className="mt-2 fade-in">

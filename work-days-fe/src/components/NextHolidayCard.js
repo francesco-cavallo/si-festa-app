@@ -31,6 +31,7 @@ const NextHolidayCard = ({ baseURL, giorni }) => {
       buttonText="Scopri"
       buttonVariant="success"
       onClick={fetchNextHoliday}
+      loading={loading}
     >
       {nextHoliday && (
         <div className="fs-5">

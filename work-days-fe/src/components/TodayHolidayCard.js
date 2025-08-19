@@ -21,6 +21,7 @@ const TodayHolidayCard = ({ baseURL }) => {
       buttonText="Controlla"
       buttonVariant="danger"
       onClick={checkTodayHoliday}
+      loading={loading}
     >
       {isFesta && (
         <div className="mt-2 fs-5 fw-bold">

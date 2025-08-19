@@ -27,11 +27,13 @@ const NextHolidayCard = ({ baseURL, giorni }) => {
   return (
     <HolidayCard
       title="La prossima festa"
-      icon={<FaUmbrellaBeach className="me-2 text-success" />}
+      icon={<FaUmbrellaBeach/>}
+      iconColor={"#fd7e14"}
       buttonText="Scopri"
-      buttonVariant="success"
       onClick={fetchNextHoliday}
       loading={loading}
+      btnClass="btn-next"
+      iconClass={"icon-longweekend"}
     >
       {nextHoliday && (
         <div className="fs-5">

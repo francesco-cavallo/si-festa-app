@@ -17,11 +17,13 @@ const TodayHolidayCard = ({ baseURL }) => {
   return (
     <HolidayCard
       title="È festa oggi?"
-      icon={<FaCalendarDay className="me-2 text-danger" />}
+      icon={<FaCalendarDay/>}
+      iconColor={"#198754"}
       buttonText="Controlla"
-      buttonVariant="danger"
       onClick={checkTodayHoliday}
       loading={loading}
+      btnClass="btn-today"
+      iconClass={"icon-longweekend"}
     >
       {isFesta && (
         <div className="mt-2 fs-5 fw-bold">

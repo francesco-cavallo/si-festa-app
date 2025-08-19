@@ -1,143 +1,142 @@
-import React, { useState } from 'react'
-import Button from 'react-bootstrap/Button';
-// import { Card } from 'react-bootstrap'
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Table from 'react-bootstrap/Table';
+import React, { useState, useEffect } from 'react';
+import { Button, Container, Row, Col, Spinner, Badge } from 'react-bootstrap';
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css"
-import { useEffect } from 'react';
-import moment from 'moment'
-import 'moment/locale/it'
+import "react-datepicker/dist/react-datepicker.css";
+import moment from 'moment';
+import 'moment/locale/it';
+import { FaUmbrellaBeach } from 'react-icons/fa';
+import "./LongWeekend.css";
 
-/** TO DOS HERE
- *  fare intersezione tra le chiamate longWeekend e nationalHolidays
- *  in questo modo posso inserire nella tabella anche il nome della
- *  festività
- *  oss: posso filtrare eguagliando startDate o endDate
- *  1. Formattare date per GG-MM-AAAA --OK
- */
+const LongWeekend = ({ baseURL, giorni }) => {
+    const [year, setYear] = useState(new Date().getFullYear());
+    const [startDate, setStartDate] = useState(new Date());
+    const [res, setRes] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
-const LongWeekend = (props) => {
-    const { 
-        baseURL, 
-        giorni
-    } = props
+    moment.locale('it');
 
-    const [year, setYear] = useState(new Date().getFullYear())
-    const [res, setRes] = useState('')
-    const [startDate, setStartDate] = useState(new Date())
-
-    function longWeekend() {
-        const tmp = startDate.getFullYear()
-        console.log(tmp);
-        fetch(`${baseURL}/longWeekend`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ year })
-        })
-            .then(data => data.json())
-            .then(json => {
-                setRes(json)
-            })
-    }
-
-    const data = res && res.length ? res.map(elem => {
-        moment.locale('it')
-        const { startDate, endDate, needBridgeDay } = elem
-        const dataInizio = new Date(startDate)
-        const dataFine = new Date(endDate)
-        const dataInizioF = moment(dataInizio).format('L')
-        const dataFineF = moment(dataFine).format('L')
-        const giornoFerie = needBridgeDay ? needBridgeDay === true ? 'Sì' : 'No' : 'No'
-        return {
-            inizio: `${dataInizioF} - ${giorni.find(el => dataInizio.getDay() === el.value).name}`,
-            fine: `${dataFineF} - ${giorni.find(el => dataFine.getDay() === el.value).name}`,
-            // giornoFerie: JSON.stringify(needBridgeDay)
-            giornoFerie
+    const fetchLongWeekend = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const response = await fetch(`${baseURL}/longWeekend`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ year })
+            });
+            if (!response.ok) throw new Error('Errore nel caricamento dei dati');
+            const data = await response.json();
+            setRes(data);
+        } catch (err) {
+            console.error(err);
+            setError(err.message);
+        } finally {
+            setLoading(false);
         }
-    }) : ''
+    };
 
     useEffect(() => {
-        console.log(startDate);
-        setYear(startDate.getFullYear())
-    }, [startDate])
+        setYear(startDate.getFullYear());
+    }, [startDate]);
 
-    // getData
     useEffect(() => {
-        longWeekend()
+        fetchLongWeekend();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [year]);
 
-    console.log('data', data);
+    const formattedData = res.map(elem => {
+        const start = new Date(elem.startDate);
+        const end = new Date(elem.endDate);
+
+        return {
+            inizio: moment(start).format('L'),
+            giornoInizio: giorni.find(d => start.getDay() === d.value)?.name || '',
+            fine: moment(end).format('L'),
+            giornoFine: giorni.find(d => end.getDay() === d.value)?.name || '',
+            giornoFerie: elem.needBridgeDay ? 'Sì' : 'No'
+        };
+    });
 
     return (
-        <>
-            {/* <Card border='primary'> */}
-                {/* <Card.Body> */}
-                    <Container fluid>
-                        {/* Title */}
-                        <Row>
-                            <Col>
-                            <h3>{'Weekend lunghi permette di trovare tutti i "finesettimana lunghi" dell\'anno scelto'}</h3>
-                            </Col>
-                        </Row>
-                        {/* Blank space */}
-                        <Row>
-                            <Col><p></p></Col>
-                        </Row>
-                        {/* Button to call API + DatePicker */}
-                        <Row>
-                            <Col lg={3} md={4} sm={12} xs={12}>
-                                <Button variant="primary" onClick={longWeekend}>Weekend lunghi (Italy only)</Button>
-                            </Col>
-                            <Col md={5} sm={12}>
-                                {"Seleziona l'anno: \n"}
-                                <DatePicker
-                                    selected={startDate}
-                                    onChange={(date) => setStartDate(date)}
-                                    showYearPicker
-                                    dateFormat='yyyy'
-                                    style={{ width: '40px' }}
-                                />
-                            </Col>
-                        </Row>
-                        {/* Blank space */}
-                        <Row>
-                            <Col><p></p></Col>
-                        </Row>
-                        {/* Table */}
-                        <Row>
-                            <Col>
-                                <Table responsive>
-                                    <thead>
-                                        <tr>
-                                            {/* GIORNO | NOME */}
-                                            <th key={'inizio'}>INIZIO</th>
-                                            <th key={'fine'}>FINE</th>
-                                            <th key={'giornoFerie'}>GIORNO DI FERIE</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {data && data.length ?
-                                        data.map(festa => {
-                                            return <tr>
-                                                <td key={'inizio'}>{festa.inizio}</td>
-                                                <td key={'fine'}>{festa.fine}</td>
-                                                <td key={'giornoFerie'}>{festa.giornoFerie}</td>
-                                            </tr>
-                                        })
-                                        : undefined}
-                                    </tbody>
-                                </Table>
-                            </Col>
-                        </Row>
-                    </Container>
-                {/* </Card.Body> */}
-            {/* </Card> */}
-        </>
-    )
-}
+        <Container className="longweekend-container">
+            <Row className="mb-4">
+                <Col>
+                    <h3>Scopri i tuoi weekend lunghi del 2025</h3>
+                    <p>Consulta subito quali giorni festivi e ponti ti permettono di goderti più tempo libero quest’anno.</p>
+                </Col>
+            </Row>
 
-export default LongWeekend
+            <Row className="longweekend-controls mb-4">
+                <Col xs={12} md={4} className="mb-2">
+                    <DatePicker
+                        selected={startDate}
+                        onChange={date => setStartDate(date)}
+                        showYearPicker
+                        dateFormat="yyyy"
+                        className="form-control"
+                        aria-label="Seleziona anno"
+                    />
+                </Col>
+                <Col xs={12} md={3}>
+                    <Button
+                        variant="primary"
+                        onClick={fetchLongWeekend}
+                        disabled={loading}
+                        className="w-100"
+                        aria-label="Mostra weekend lunghi"
+                    >
+                        {loading ? <Spinner animation="border" size="sm" /> : 'Mostra weekend lunghi'}
+                    </Button>
+                </Col>
+            </Row>
+
+            {error && (
+                <Row className="mb-3">
+                    <Col>
+                        <p style={{ color: 'red' }}>Errore: {error}</p>
+                    </Col>
+                </Row>
+            )}
+
+            <Row className="g-3">
+                {formattedData.length ? (
+                    formattedData.map((f, idx) => (
+                        <Col xs={12} md={6} lg={4} key={idx}>
+                            <div
+                                className="longweekend-card"
+                                data-ferie={f.giornoFerie}
+                            // style={{
+                            //   backgroundColor: f.giornoFerie === 'Sì' ? '#6f42c1' : '#198754',
+                            //   color: 'white',
+                            // }}
+                            >
+                                <div>
+                                    <h5 className="card-title">Inizio</h5>
+                                    <p className="card-text">{f.inizio} - {f.giornoInizio}</p>
+                                    <h5 className="card-title">Fine</h5>
+                                    <p className="card-text">{f.fine} - {f.giornoFine}</p>
+                                </div>
+                                <div className="d-flex justify-content-between align-items-center mt-3">
+                                    <Badge
+                                        bg={f.giornoFerie === 'Sì' ? 'secondary' : 'dark'}
+                                        text="white"
+                                    >
+                                        {f.giornoFerie === 'Sì' ? 'Giorno di ferie necessario' : 'No giorno di ferie necessario'}
+                                    </Badge>
+                                    <FaUmbrellaBeach size={20} />
+                                </div>
+                            </div>
+                        </Col>
+                    ))
+                ) : !loading && (
+                    <Col>
+                        <p>Nessun weekend lungo trovato per l'anno selezionato.</p>
+                    </Col>
+                )}
+            </Row>
+        </Container>
+    );
+};
+
+export default LongWeekend;

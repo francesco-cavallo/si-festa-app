@@ -1,6 +1,10 @@
 .homepage {
-  background: #f9fafc;
   min-height: 100vh;
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: 2rem;
 }
 
 .fade-in {

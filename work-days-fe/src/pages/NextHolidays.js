@@ -1,89 +1,97 @@
-import { useEffect, useState } from "react";
-// import Button from 'react-bootstrap/Button';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Table from 'react-bootstrap/Table';
-import moment from 'moment'
-import 'moment/locale/it'
+import React, { useEffect, useState } from "react";
+import { Container, Row, Col, Badge, Spinner } from 'react-bootstrap';
+import moment from 'moment';
+import 'moment/locale/it';
+import { FaCalendarDay } from 'react-icons/fa';
+import "./NextHolidays.css";
 
-const NextHolidays = (props) => {
-    const {
-        giorni,
-        baseURL
-    } = props
-    const [res, setRes] = useState('')
-    function nextHolidays() {
-        fetch(`${baseURL}/nextPublicHolidays`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            // body: 'it'
-        })
-            .then(data => data.json())
-            .then(json => {
-                setRes(json.slice(0, 5))
-            })
-    }
-    // GetData
-    useEffect(()=>{
-        nextHolidays()
+const NextHolidays = ({ baseURL, giorni }) => {
+    const [res, setRes] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    moment.locale('it');
+
+    const fetchNextHolidays = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const response = await fetch(`${baseURL}/nextPublicHolidays`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+            });
+            if (!response.ok) throw new Error('Errore nel caricamento delle festività');
+            const data = await response.json();
+            setRes(data.slice(0, 5));
+        } catch (err) {
+            console.error(err);
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchNextHolidays();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-    const data = res && res.length ? res.map(elem => {
-        moment.locale('it')
-        elem.dataF = moment(elem.date).format('L')
-        elem.giorno = giorni.find(el => new Date(elem.date).getDay() === el.value).name
-        return elem
-    }) : ''
-    console.log('data', data);
-    return(
-        <>
-            <Container fluid>
-                {/* Title */}
-                <Row>   
-                    <Col>
-                        <h3>{"Prossime feste restituisce l'elenco delle prossime cinque festività italiane, a partire dal giorno corrente"}</h3>
-                    </Col>
-                </Row>
-                {/* Blank space */}
-                <Row>
-                    <Col><p></p></Col>
-                </Row>
-                {/* Button to call API - I don't need a button */}
-                {/* <Col lg={3} md={4} sm={12} xs={12}>
-                    <Button variant="primary" onClick={nextHolidays}>Prossime feste (Italy only)</Button>
-                </Col> */}
-                {/* Blank space */}
-                <Row>
-                    <Col><p></p></Col>
-                </Row>
-                {/* Table */}
-                <Row>
-                    <Col>
-                        <Table responsive>
-                            <thead>
-                                <tr>
-                                    {/* GIORNO | NOME */}
-                                    <th key={'giorno'}>GIORNO</th>
-                                    <th key={'nome'}>NOME</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {data && data.length ?
-                                data.map(festa => {
-                                    return <tr>
-                                        <td key={'inizio'}>{festa.dataF + ' - ' + festa.giorno}</td>
-                                        <td key={'fine'}>{festa.localName}</td>
-                                    </tr>
-                                })
-                                : undefined}
-                            </tbody>
-                        </Table>
-                    </Col>
-                </Row>
-            </Container>
-        </>
-    )
-}
+    }, []);
 
-export default NextHolidays 
+    const formattedData = res.map(elem => {
+        const date = new Date(elem.date);
+        return {
+            dataF: moment(date).format('L'),
+            giorno: giorni.find(d => date.getDay() === d.value)?.name || '',
+            nome: elem.localName
+        };
+    });
+
+    return (
+        <Container className="nextholidays-container">
+            <Row className="mb-4">
+                <Col>
+                    <h3>Prossime festività italiane</h3>
+                    <p>
+                        Ecco le prossime cinque festività a partire dal giorno corrente.
+                    </p>
+                </Col>
+            </Row>
+
+            {loading && (
+                <Row className="mb-3">
+                    <Col style={{ textAlign: 'center' }}>
+                        <Spinner animation="border" />
+                    </Col>
+                </Row>
+            )}
+
+            {error && (
+                <Row className="mb-3">
+                    <Col>
+                        <p style={{ color: 'red' }}>Errore: {error}</p>
+                    </Col>
+                </Row>
+            )}
+
+            <Row className="g-3">
+                {formattedData.length ? (
+                    formattedData.map((f, idx) => (
+                        <Col xs={12} md={6} lg={4} key={idx}>
+                            <div className="nextholidays-card">
+                                <div>
+                                    <h5 className="card-title">{f.nome}</h5>
+                                    <p className="card-text">{f.giorno} - {f.dataF}</p>
+                                </div>
+                            </div>
+                        </Col>
+                    ))
+                ) : !loading && (
+                    <Col>
+                        <p style={{ textAlign: 'center' }}>Nessuna festività trovata.</p>
+                    </Col>
+                )}
+            </Row>
+        </Container>
+    );
+};
+
+export default NextHolidays;

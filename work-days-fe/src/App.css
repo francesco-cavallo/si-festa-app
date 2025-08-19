@@ -1,5 +1,8 @@
 .App {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* assicura che il footer stia sotto il contenuto */
 }
 
 .App-logo {
@@ -15,7 +18,7 @@
 
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -29,16 +32,22 @@
 }
 
 @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
-.footer {
-  position: fixed;
+/* contenuto delle pagine */
+.page-content {
+  flex: 1; /* occupa lo spazio tra header e footer */
+  padding: 2rem;
+}
+
+/* footer */
+footer {
   width: 100%;
-  bottom: 0;
+  margin-top: 2rem;
+  text-align: center;
+  color: #666;
+  font-size: 0.9rem;
+  /* rimosso position: fixed */
 }

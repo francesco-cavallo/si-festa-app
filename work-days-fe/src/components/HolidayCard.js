@@ -7,36 +7,40 @@ const HolidayCard = ({
   title,
   icon,
   buttonText,
-  buttonVariant,
   onClick,
   loading,
   children,
+  btnClass,
+  iconColor,
 }) => {
   const [expanded, setExpanded] = useState(false);
   const hasContent = !!children;
 
   const handleToggle = () => {
     if (expanded) {
-      setExpanded(false); // chiudi
+      setExpanded(false);
     } else {
-      onClick?.();        // chiama API
-      setExpanded(true);  // apri
+      onClick?.();
+      setExpanded(true);
     }
   };
 
   return (
-    <Card className="shadow rounded-4 holiday-card">
+    <Card className="rounded-4 holiday-card">
       <Card.Body>
-        <div className="d-flex align-items-center justify-content-between mb-2">
+        <div className="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between">
           {/* Titolo + icona */}
-          <Card.Title className="d-flex align-items-center m-0">
-            {icon} {title}
+          <Card.Title className="d-flex align-items-center m-0 mb-2 mb-md-0 flex-grow-1">
+            {React.cloneElement(icon, { style: { color: iconColor, marginRight: '0.5rem' } })}
+            {title}
           </Card.Title>
 
-          {/* Bottone singolo che cambia */}
-          <Button variant={expanded ? "outline-secondary" : buttonVariant}
-                  onClick={handleToggle}
-                  disabled={loading}>
+          {/* Bottone singolo */}
+          <Button
+            onClick={handleToggle}
+            disabled={loading}
+            className={`holiday-btn ${btnClass} mt-2 mt-md-0`}
+          >
             {loading ? <Spinner size="sm" animation="border" /> : expanded ? "Chiudi" : buttonText}
           </Button>
         </div>

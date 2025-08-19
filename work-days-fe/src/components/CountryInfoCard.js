@@ -35,10 +35,12 @@ const CountryInfoCard = ({ baseURL }) => {
     <HolidayCard
       title="Info sul Paese"
       icon={<FaFlag className="me-2 text-primary" />}
+      iconColor={"#0d6efd"}
       buttonText="Ottieni Info"
-      buttonVariant="primary"
       onClick={fetchCountryInfo}
       loading={loading}
+      btnClass="btn-country"
+      iconClass={"icon-longweekend"}
     >
       {infoNazione && (
         <div className="mt-2 fade-in">

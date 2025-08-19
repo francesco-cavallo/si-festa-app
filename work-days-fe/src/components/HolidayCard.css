@@ -1,26 +1,159 @@
-.fade-slide-content {
+/* =========================
+   CARD BASE
+========================= */
+.holiday-card {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 1rem;
+  transition: box-shadow 0.4s ease, transform 0.4s ease;
+  position: relative;
   overflow: hidden;
 }
 
+/* Ombre soft colorate */
+.holiday-card.btn-country { box-shadow: 0 6px 15px rgba(13, 110, 253, 0.15); }
+.holiday-card.btn-today { box-shadow: 0 6px 15px rgba(25, 135, 84, 0.15); }
+.holiday-card.btn-next { box-shadow: 0 6px 15px rgba(253, 126, 20, 0.15); }
+.holiday-card.btn-longweekend { box-shadow: 0 6px 15px rgba(111, 66, 193, 0.15); }
+
+/* =========================
+   TITOLI
+========================= */
+.holiday-card .card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #333;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 4px;
+}
+
+/* Icone animate */
+.holiday-card .card-title svg {
+  background: rgba(0,0,0,0.05);
+  border-radius: 50%;
+  padding: 6px;
+  width: 32px;
+  height: 32px;
+  margin-right: 0.5rem;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.holiday-card:hover .card-title svg {
+  transform: rotate(8deg) scale(1.1);
+  background: rgba(0,0,0,0.08);
+}
+
+/* =========================
+   BOTTONI
+========================= */
+.holiday-card .holiday-btn {
+  min-width: 120px;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 50px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.5s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+/* Glossy overlay */
+.holiday-card .holiday-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.4);
+  transform: skewX(-25deg);
+  transition: left 0.7s ease;
+}
+
+.holiday-card .holiday-btn:hover::before {
+  left: 130%;
+}
+
+/* Ripple effect */
+.holiday-card .holiday-btn:active::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.6);
+  animation: ripple 0.6s linear;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes ripple {
+  from { opacity: 0.7; transform: translate(-50%, -50%) scale(1); }
+  to { opacity: 0; transform: translate(-50%, -50%) scale(20); }
+}
+
+/* Gradients */
+.holiday-card .btn-country {
+  background: linear-gradient(135deg, #0d6efd, #3b8bfd);
+}
+.holiday-card .btn-today {
+  background: linear-gradient(135deg, #198754, #28a745);
+}
+.holiday-card .btn-next {
+  background: linear-gradient(135deg, #fd7e14, #ff922b);
+}
+.holiday-card .btn-longweekend {
+  background: linear-gradient(135deg, #6f42c1, #8a63d2);
+}
+
+/* Hover più scuri */
+.holiday-card .btn-country:hover { background: linear-gradient(135deg, #084298, #3b8bfd); }
+.holiday-card .btn-today:hover { background: linear-gradient(135deg, #0f5132, #28a745); }
+.holiday-card .btn-next:hover { background: linear-gradient(135deg, #a54a00, #ff922b); }
+.holiday-card .btn-longweekend:hover { background: linear-gradient(135deg, #452179, #8a63d2); }
+
+/* =========================
+   CONTENUTO ESPANDIBILE
+========================= */
+.holiday-card .fade-slide-content {
+  line-height: 1.6;
+  color: #555;
+}
+
 .fade-slide-enter {
-  max-height: 0;
-  opacity: 0;
-  transform: translateY(-10px);
+  max-height: 0; opacity: 0; transform: translateY(-10px);
 }
 .fade-slide-enter-active {
-  max-height: 500px;
-  opacity: 1;
-  transform: translateY(0);
-  transition: max-height 300ms ease, opacity 300ms ease, transform 300ms ease;
+  max-height: 500px; opacity: 1; transform: translateY(0);
+  transition: max-height 400ms cubic-bezier(0.25, 1, 0.5, 1), 
+              opacity 400ms ease, transform 400ms ease;
 }
 .fade-slide-exit {
-  max-height: 500px;
-  opacity: 1;
-  transform: translateY(0);
+  max-height: 500px; opacity: 1; transform: translateY(0);
 }
 .fade-slide-exit-active {
-  max-height: 0;
-  opacity: 0;
-  transform: translateY(-10px);
-  transition: max-height 300ms ease, opacity 300ms ease, transform 300ms ease;
+  max-height: 0; opacity: 0; transform: translateY(-10px);
+  transition: max-height 400ms cubic-bezier(0.25, 1, 0.5, 1), 
+              opacity 400ms ease, transform 400ms ease;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+  .holiday-card { max-width: 100%; }
+  .holiday-card .card-title { font-size: 1.1rem; }
+  .holiday-card .fade-slide-content { font-size: 0.95rem; }
+  .holiday-card .holiday-btn { width: 100%; } /* full width su mobile */
+}
+
+@media (max-width: 576px) {
+  .holiday-card .card-title { font-size: 1rem; }
+  .holiday-card .fade-slide-content { font-size: 0.9rem; }
+  .holiday-card .holiday-btn { padding: 8px 16px; min-width: 100%; }
 }

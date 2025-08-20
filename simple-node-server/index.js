@@ -32,7 +32,7 @@ app.get('/availableCountries', (req, res) => {
       };
     axios.request(config)
         .then((response) => {
-        console.log(JSON.stringify(response.data[0], null, 2));
+        // console.log(JSON.stringify(response.data[0], null, 2));
         // eg. alert col primo risultato della lista
         res.send(response.data[0]);
         })
@@ -55,7 +55,7 @@ app.get('/countryInfo', (req, res) => {
       };
       axios.request(config)
       .then((response) => {
-        console.log(JSON.stringify(response.data, null, 2));
+        // console.log(JSON.stringify(response.data, null, 2));
         res.send(response.data)
       })
       .catch((error) => {
@@ -66,7 +66,6 @@ app.get('/countryInfo', (req, res) => {
 // LongWeekend
 app.post('/longWeekend', (req, res) => {
     const anno = req.body.year
-    console.log('anno', anno);
     let config = {
         method: 'get',
         maxBodyLength: Infinity,
@@ -77,7 +76,7 @@ app.post('/longWeekend', (req, res) => {
       };
       axios.request(config)
       .then((response) => {
-        console.log(JSON.stringify(response.data, null, 2));
+        // console.log(JSON.stringify(response.data, null, 2));
         res.send(response.data)
       })
       .catch((error) => {
@@ -88,7 +87,6 @@ app.post('/longWeekend', (req, res) => {
 // PublicHolidays
 app.post('/publicHolidays', (req, res) => {
     const anno = req.body.year
-    console.log('anno', anno)
     let config = {
         method: 'get',
         maxBodyLength: `Infinity`,
@@ -119,8 +117,17 @@ app.get('/isTodayPublicHoliday', (req, res) => {
       
       axios.request(config)
       .then((response) => {
-        console.log(JSON.stringify(response.status));
-        // res.send(response)
+        // console.log(JSON.stringify(response.status));
+        if (JSON.stringify(response.status) === '200') {
+          console.log('è festa')
+          res.send({"isFesta": 'Yes'})
+        } else if (JSON.stringify(response.status) === '204') {
+          // console.log('non è festa')
+          res.send({"isFesta": 'No'})
+        } else {
+          console.log('ERRORE')
+        }
+        // res.send(JSON.stringify(response.status))
       })
       .catch((error) => {
         console.log(error);
@@ -128,7 +135,7 @@ app.get('/isTodayPublicHoliday', (req, res) => {
 })
 
 // nextPublicHolidays
-app.get('/nextPublicHolidays', (req, res) => {
+app.post('/nextPublicHolidays', (req, res) => {
   let config = {
       method: 'get',
       maxBodyLength: Infinity,
@@ -139,7 +146,7 @@ app.get('/nextPublicHolidays', (req, res) => {
     };
     axios.request(config)
     .then((response) => {
-      console.log(JSON.stringify(response.data, null, 2));
+      // console.log(JSON.stringify(response.data, null, 2));
       res.send(response.data)
     })
     .catch((error) => {
@@ -159,7 +166,7 @@ app.get('/nextPublicHoliday', (req, res) => {
     };
     axios.request(config)
     .then((response) => {
-      console.log(JSON.stringify(response.data[0], null, 2));
+      // console.log(JSON.stringify(response.data[0], null, 2));
       res.send(response.data[0])
     })
     .catch((error) => {

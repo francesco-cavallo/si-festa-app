@@ -64,7 +64,7 @@ const NationalHolidays = ({ baseURL, giorni }) => {
         </Col>
       </Row>
 
-      <Row className="holidays-controls mb-4">
+      <Row className="nationalholidays-controls mb-4">
         <Col xs={12} md={4} className="mb-2">
           <DatePicker
             selected={startDate}
@@ -80,7 +80,7 @@ const NationalHolidays = ({ baseURL, giorni }) => {
             variant="primary"
             onClick={fetchHolidays}
             disabled={loading}
-            className="w-100"
+            className="w-100 nationalholidays-btn"
             aria-label="Mostra feste nazionali"
           >
             {loading ? <Spinner animation="border" size="sm" /> : 'Mostra feste nazionali'}
@@ -100,15 +100,10 @@ const NationalHolidays = ({ baseURL, giorni }) => {
         {formattedData.length ? (
           formattedData.map((h, idx) => (
             <Col xs={12} md={6} lg={4} key={idx}>
-              <div className="holiday-card">
+              <div className="nationalholidays-card">
                 <div>
                   <h5 className="card-title">{h.nome}</h5>
                   <p className="card-text">{h.giorno} - {h.giornoSettimana}</p>
-                </div>
-                <div className="d-flex justify-content-end align-items-center mt-3">
-                  {/* <Badge bg="info" text="white" className="holiday-badge">
-                    <FaRegCalendarCheck /> Festività
-                  </Badge> */}
                 </div>
               </div>
             </Col>

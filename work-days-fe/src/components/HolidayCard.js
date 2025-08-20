@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Card, Button, Spinner } from "react-bootstrap";
 import { CSSTransition } from "react-transition-group";
 import "./HolidayCard.css";
@@ -16,6 +16,9 @@ const HolidayCard = ({
   const [expanded, setExpanded] = useState(false);
   const hasContent = !!children;
 
+  // ref specifico per il nodo animato
+  const contentRef = useRef(null);
+
   const handleToggle = () => {
     if (expanded) {
       setExpanded(false);
@@ -31,7 +34,9 @@ const HolidayCard = ({
         <div className="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between">
           {/* Titolo + icona */}
           <Card.Title className="d-flex align-items-center m-0 mb-2 mb-md-0 flex-grow-1">
-            {React.cloneElement(icon, { style: { color: iconColor, marginRight: '0.5rem' } })}
+            {React.cloneElement(icon, {
+              style: { color: iconColor, marginRight: "0.5rem" },
+            })}
             {title}
           </Card.Title>
 
@@ -41,7 +46,13 @@ const HolidayCard = ({
             disabled={loading}
             className={`holiday-btn ${btnClass} mt-2 mt-md-0`}
           >
-            {loading ? <Spinner size="sm" animation="border" /> : expanded ? "Chiudi" : buttonText}
+            {loading ? (
+              <Spinner size="sm" animation="border" />
+            ) : expanded ? (
+              "Chiudi"
+            ) : (
+              buttonText
+            )}
           </Button>
         </div>
 
@@ -51,8 +62,11 @@ const HolidayCard = ({
           timeout={300}
           classNames="fade-slide"
           unmountOnExit
+          nodeRef={contentRef}   // 👈 obbligatorio per StrictMode
         >
-          <div className="mt-3 fs-5 fade-slide-content">{children}</div>
+          <div ref={contentRef} className="mt-3 fs-5 fade-slide-content">
+            {children}
+          </div>
         </CSSTransition>
       </Card.Body>
     </Card>

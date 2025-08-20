@@ -13,12 +13,11 @@ const LongWeekendsCard = () => {
   return (
     <HolidayCard
       title="Weekend lunghi"
-    //   icon={<FaPlane className="bi bi-calendar-week text-success me-2 icon-longweekend"/>}
       icon={<FaPlane/>}
       iconColor="#6f42c1"
       buttonText="Scopri"
       onClick={handleClick}
-      loading={false} // non serve lo spinner perché non ci sono fetch
+      loading={false}
       btnClass="btn-longweekend"
       iconClass={"icon-longweekend"}
     >

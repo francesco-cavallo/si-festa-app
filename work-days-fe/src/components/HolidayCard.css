@@ -6,10 +6,17 @@
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 1rem;
-  transition: box-shadow 0.4s ease, transform 0.4s ease;
+  transition: box-shadow 0.4s ease;
   position: relative;
   overflow: hidden;
 }
+
+/* Disattiva qualsiasi sollevamento su hover */
+.holiday-card:hover {
+  transform: none !important;
+  box-shadow: inherit !important; /* mantiene l’ombra originale */
+}
+
 
 /* Ombre soft colorate */
 .holiday-card.btn-country { box-shadow: 0 6px 15px rgba(13, 110, 253, 0.15); }

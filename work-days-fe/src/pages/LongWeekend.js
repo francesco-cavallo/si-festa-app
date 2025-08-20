@@ -83,7 +83,7 @@ const LongWeekend = ({ baseURL, giorni }) => {
                         variant="primary"
                         onClick={fetchLongWeekend}
                         disabled={loading}
-                        className="w-100"
+                        className="w-100 longweekend-btn"
                         aria-label="Mostra weekend lunghi"
                     >
                         {loading ? <Spinner animation="border" size="sm" /> : 'Mostra weekend lunghi'}

@@ -26,6 +26,57 @@
   margin-bottom: 2rem;
 }
 
+.longweekend-btn {
+  background: linear-gradient(135deg, #6f42c1, #8a63d2);
+  border-radius: 25px !important;
+  min-width: 120px;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 50px;
+  border: none !important;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.5s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.longweekend-btn:hover {
+  background: linear-gradient(135deg, #452179, #8a63d2);
+}
+
+.longweekend-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.4);
+  transform: skewX(-25deg);
+  transition: left 0.7s ease;
+}
+
+.longweekend-btn:hover::before {
+  left: 130%;
+}
+.longweekend-btn:active::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.6);
+  animation: ripple 0.6s linear;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes ripple {
+  from { opacity: 0.7; transform: translate(-50%, -50%) scale(1); }
+  to { opacity: 0; transform: translate(-50%, -50%) scale(20); }
+}
+
 /* Card dei long weekend */
 .longweekend-card {
   border-radius: 12px;
@@ -38,6 +89,7 @@
   min-width: 250px;
   min-height: 180px;
   color: #212529;
+  background-color: rgba(165, 123, 244, 0.3);
 }
 
 /* Hover sulle card */
@@ -70,11 +122,19 @@
 
 /* Colori soft per le card dinamiche */
 .longweekend-card[data-ferie="Sì"] {
-  background-color: #d7c0f4; /* viola lavanda chiaro */
+  color: #212529;
+  border: 1px solid #8a63d2;
+  border-radius: 12px;
 }
 
 .longweekend-card[data-ferie="No"] {
-  background-color: #c8e6c9; /* verde salvia tenue */
+  color: #212529;
+}
+
+.longweekend-card:hover {
+  filter: brightness(1.05);
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
 }
 
 /* Titoli dentro la card */

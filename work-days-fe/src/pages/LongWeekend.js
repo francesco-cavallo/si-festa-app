@@ -5,16 +5,20 @@ import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
 import 'moment/locale/it';
 import { FaUmbrellaBeach } from 'react-icons/fa';
+import { BsChevronDown, BsChevronUp } from 'react-icons/bs';
 import "./LongWeekend.css";
 
 const LongWeekend = ({ baseURL, giorni }) => {
     const [year, setYear] = useState(new Date().getFullYear());
+    const [bridgeDays, setBridgeDays] = useState(0);
     const [startDate, setStartDate] = useState(new Date());
     const [res, setRes] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [expandedCards, setExpandedCards] = useState({});
 
     moment.locale('it');
+    console.log(bridgeDays)
 
     const fetchLongWeekend = async () => {
         setLoading(true);
@@ -23,7 +27,7 @@ const LongWeekend = ({ baseURL, giorni }) => {
             const response = await fetch(`${baseURL}/longWeekend`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ year })
+                body: JSON.stringify({ year, bridgeDays })
             });
             if (!response.ok) throw new Error('Errore nel caricamento dei dati');
             const data = await response.json();
@@ -45,6 +49,13 @@ const LongWeekend = ({ baseURL, giorni }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [year]);
 
+    const toggleExpand = (idx) => {
+        setExpandedCards(prev => ({
+            ...prev,
+            [idx]: !prev[idx]
+        }));
+    };
+
     const formattedData = res.map(elem => {
         const start = new Date(elem.startDate);
         const end = new Date(elem.endDate);
@@ -54,7 +65,11 @@ const LongWeekend = ({ baseURL, giorni }) => {
             giornoInizio: giorni.find(d => start.getDay() === d.value)?.name || '',
             fine: moment(end).format('L'),
             giornoFine: giorni.find(d => end.getDay() === d.value)?.name || '',
-            giornoFerie: elem.needBridgeDay ? 'Sì' : 'No'
+            giornoFerie: elem.needBridgeDay ? 'Sì' : 'No',
+            bridgeDays: elem.bridgeDays?.map(date => ({
+                data: moment(date).format('L'),
+                giorno: giorni.find(d => new Date(date).getDay() === d.value)?.name || ''
+            })) || []
         };
     });
 
@@ -62,13 +77,13 @@ const LongWeekend = ({ baseURL, giorni }) => {
         <Container className="longweekend-container">
             <Row className="mb-4">
                 <Col>
-                    <h3>Scopri i tuoi weekend lunghi del 2025</h3>
+                    <h3>Scopri i tuoi weekend lunghi del {year}</h3>
                     <p>Consulta subito quali giorni festivi e ponti ti permettono di goderti più tempo libero quest’anno.</p>
                 </Col>
             </Row>
 
             <Row className="longweekend-controls mb-4">
-                <Col xs={12} md={4} className="mb-2">
+                <Col xs={12} md={3} className="mb-2">
                     <DatePicker
                         selected={startDate}
                         onChange={date => setStartDate(date)}
@@ -76,6 +91,17 @@ const LongWeekend = ({ baseURL, giorni }) => {
                         dateFormat="yyyy"
                         className="form-control"
                         aria-label="Seleziona anno"
+                    />
+                </Col>
+                <Col xs={12} md={3} className="mb-2">
+                    <input
+                        type="number"
+                        min="0"
+                        value={bridgeDays}
+                        onChange={(e) => setBridgeDays(Number(e.target.value))}
+                        className="form-control"
+                        aria-label="Numero massimo di giorni ponte"
+                        placeholder="Bridge days"
                     />
                 </Col>
                 <Col xs={12} md={3}>
@@ -106,26 +132,64 @@ const LongWeekend = ({ baseURL, giorni }) => {
                             <div
                                 className="longweekend-card"
                                 data-ferie={f.giornoFerie}
-                            // style={{
-                            //   backgroundColor: f.giornoFerie === 'Sì' ? '#6f42c1' : '#198754',
-                            //   color: 'white',
-                            // }}
                             >
-                                <div>
-                                    <h5 className="card-title">Inizio</h5>
-                                    <p className="card-text">{f.inizio} - {f.giornoInizio}</p>
-                                    <h5 className="card-title">Fine</h5>
-                                    <p className="card-text">{f.fine} - {f.giornoFine}</p>
+                                {/* Timeline */}
+                                <div className="timeline">
+                                    <div className="timeline-item">
+                                        <span className="dot"></span>
+                                        <div>
+                                            <strong>Inizio:</strong> {f.inizio} - {f.giornoInizio}
+                                        </div>
+                                    </div>
+                                    <div className="timeline-item">
+                                        <span className="dot"></span>
+                                        <div>
+                                            <strong>Fine:</strong> {f.fine} - {f.giornoFine}
+                                        </div>
+                                    </div>
                                 </div>
+
+                                {/* Badge + toggle */}
                                 <div className="d-flex justify-content-between align-items-center mt-3">
                                     <Badge
                                         bg={f.giornoFerie === 'Sì' ? 'secondary' : 'dark'}
                                         text="white"
                                     >
-                                        {f.giornoFerie === 'Sì' ? 'Giorno di ferie necessario' : 'No giorno di ferie necessario'}
+                                        {f.giornoFerie === 'Sì' ?
+                                            f.bridgeDays.length > 1 ?
+                                                'Giorni di ferie necessari!' :
+                                                'Giorno di ferie necessario!' :
+                                            'No giorni di ferie necessari'}
                                     </Badge>
-                                    <FaUmbrellaBeach size={20} />
+                                    <div className="d-flex align-items-center">
+                                        <FaUmbrellaBeach size={20} className="me-2" />
+                                        {f.giornoFerie === 'Sì' ?
+                                        <Button
+                                            variant="link"
+                                            className="p-0 toggle-btn"
+                                            onClick={() => toggleExpand(idx)}
+                                            aria-label={expandedCards[idx] ? "Chiudi dettagli" : "Apri dettagli"}
+                                        >
+                                            {expandedCards[idx] ? <BsChevronUp /> : <BsChevronDown />}
+                                        </Button> : <></>}
+                                    </div>
                                 </div>
+
+                                {/* Sezione espandibile */}
+                                {expandedCards[idx] && f.bridgeDays.length > 0 && (
+                                <div className="bridge-days">
+                                    {f.bridgeDays.length > 1 ?
+                                    <h6 className="card-subtitle">Giorni ponte</h6> :
+                                    <h6 className="card-subtitle">Giorno ponte</h6>}
+                                    <ul className="mb-0 ps-3">
+                                        {f.bridgeDays.map((b, i) => (
+                                            <li key={i}>
+                                            {b.data} - {b.giorno}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                                )}
                             </div>
                         </Col>
                     ))
@@ -140,3 +204,4 @@ const LongWeekend = ({ baseURL, giorni }) => {
 };
 
 export default LongWeekend;
+    

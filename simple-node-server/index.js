@@ -61,16 +61,19 @@ app.get('/countryInfo', (req, res) => {
 
 // LongWeekend
 app.post('/longWeekend', (req, res) => {
+    console.log('req.body', req.body)
     const anno = req.body.year;
     const bridgeDays = req.body.bridgeDays;
     let url = `${baseURL}longWeekend/${anno}/${countryCode}`;
-    if (bridgeDays) {
+    if (bridgeDays === 0 || bridgeDays > 0) {
+      console.log('first')
       url += `?availableBridgeDays=${bridgeDays}`;
     }
+    console.log(url)
     let config = {
         method: 'get',
         maxBodyLength: Infinity,
-        url: `${baseURL}longWeekend/${anno}/${countryCode}`,
+        url,
         headers: { 
           'accept': 'text/plain'
         }

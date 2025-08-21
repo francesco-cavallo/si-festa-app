@@ -13,7 +13,7 @@
 
 .longweekend-container p {
   text-align: center;
-  margin-bottom: 2rem;
+  /* margin-bottom: 2rem; */
   color: #555;
   font-size: 1rem;
 }
@@ -24,12 +24,18 @@
   gap: 1rem;
   justify-content: center;
   margin-bottom: 2rem;
+  align-items: center;
+  background-color: rgba(138, 99, 210, 0.05);
+}
+
+.longweekend-controls .badges {
+  background-color: #8a63d2 !important;
 }
 
 .longweekend-btn {
   background: linear-gradient(135deg, #6f42c1, #8a63d2);
   border-radius: 25px !important;
-  min-width: 120px;
+  min-width: 200px;
   color: white;
   padding: 10px 20px;
   border-radius: 50px;
@@ -75,6 +81,18 @@
 @keyframes ripple {
   from { opacity: 0.7; transform: translate(-50%, -50%) scale(1); }
   to { opacity: 0; transform: translate(-50%, -50%) scale(20); }
+}
+
+.filters-btn {
+  min-width: 200px;
+}
+
+.reset-filters {
+  cursor: pointer;
+}
+
+.longweekend-container .filters-section {
+  transition: height 300ms ease, opacity 300ms ease;
 }
 
 /* Card dei long weekend */

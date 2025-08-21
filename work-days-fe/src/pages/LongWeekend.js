@@ -5,8 +5,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
 import 'moment/locale/it';
 import { FaUmbrellaBeach } from 'react-icons/fa';
-import { BsChevronDown, BsChevronUp } from 'react-icons/bs';
+import { BsChevronDown, BsChevronUp, BsSliders } from 'react-icons/bs';
 import "./LongWeekend.css";
+import LongWeekendFilters from '../components/LongWeekendFilters';
+import Collapse from 'react-bootstrap/Collapse';
 
 const LongWeekend = ({ baseURL, giorni }) => {
     const [year, setYear] = useState(new Date().getFullYear());
@@ -16,9 +18,8 @@ const LongWeekend = ({ baseURL, giorni }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [expandedCards, setExpandedCards] = useState({});
-
+    const [showFilters, setShowFilters] = useState(false);
     moment.locale('it');
-    console.log(bridgeDays)
 
     const fetchLongWeekend = async () => {
         setLoading(true);
@@ -45,9 +46,8 @@ const LongWeekend = ({ baseURL, giorni }) => {
     }, [startDate]);
 
     useEffect(() => {
-        fetchLongWeekend();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [year]);
+      fetchLongWeekend()
+    }, [])
 
     const toggleExpand = (idx) => {
         setExpandedCards(prev => ({
@@ -75,48 +75,49 @@ const LongWeekend = ({ baseURL, giorni }) => {
 
     return (
         <Container className="longweekend-container">
-            <Row className="mb-4">
+            <Row className="mb-2">
                 <Col>
                     <h3>Scopri i tuoi weekend lunghi del {year}</h3>
-                    <p>Consulta subito quali giorni festivi e ponti ti permettono di goderti più tempo libero quest’anno.</p>
+                    <p>Consulta subito quali giorni festivi e ponti ti permettono di goderti più tempo libero durante l'anno.</p>
                 </Col>
             </Row>
-
-            <Row className="longweekend-controls mb-4">
-                <Col xs={12} md={3} className="mb-2">
-                    <DatePicker
-                        selected={startDate}
-                        onChange={date => setStartDate(date)}
-                        showYearPicker
-                        dateFormat="yyyy"
-                        className="form-control"
-                        aria-label="Seleziona anno"
-                    />
-                </Col>
-                <Col xs={12} md={3} className="mb-2">
-                    <input
-                        type="number"
-                        min="0"
-                        value={bridgeDays}
-                        onChange={(e) => setBridgeDays(Number(e.target.value))}
-                        className="form-control"
-                        aria-label="Numero massimo di giorni ponte"
-                        placeholder="Bridge days"
-                    />
-                </Col>
-                <Col xs={12} md={3}>
+            {/* Sezione filtri */}
+            <Row className="mb-3 align-items-center justify-content-center">
+                <Col xs="auto">
                     <Button
-                        variant="primary"
-                        onClick={fetchLongWeekend}
-                        disabled={loading}
-                        className="w-100 longweekend-btn"
-                        aria-label="Mostra weekend lunghi"
+                    variant="primary"
+                    onClick={fetchLongWeekend}
+                    disabled={loading}
+                    className="longweekend-btn"
+                    aria-label="Mostra weekend lunghi"
                     >
-                        {loading ? <Spinner animation="border" size="sm" /> : 'Mostra weekend lunghi'}
+                    {loading ? <Spinner animation="border" size="sm" /> : "Mostra weekend lunghi"}
+                    </Button>
+                </Col>
+                <Col xs="auto">
+                    <Button 
+                        variant="outline-secondary"
+                        onClick={() => setShowFilters(!showFilters)}
+                        aria-expanded={showFilters}
+                        aria-controls="filters-section"
+                        className='filters-btn'
+                    >
+                    <BsSliders className="me-2" />
+                    {showFilters ? "Nascondi filtri" : "Mostra filtri"}
                     </Button>
                 </Col>
             </Row>
-
+            {/* Sezione filtri a scomparsa */}
+            <Collapse in={showFilters} mountOnEnter unmountOnExit>
+                <div className="filters-section">
+                    <LongWeekendFilters
+                        startDate={startDate}
+                        setStartDate={setStartDate}
+                        bridgeDays={bridgeDays}
+                        setBridgeDays={setBridgeDays}
+                    />
+                </div>
+            </Collapse>
             {error && (
                 <Row className="mb-3">
                     <Col>

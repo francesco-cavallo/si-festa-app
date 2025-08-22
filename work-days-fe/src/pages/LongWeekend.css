@@ -21,11 +21,15 @@
 .longweekend-controls {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: center;
+  /* gap: 1rem; */
+  justify-content: space-between;
   margin-bottom: 2rem;
   align-items: center;
   background-color: rgba(138, 99, 210, 0.05);
+}
+
+.form-control:disabled {
+  color: #6c757d;
 }
 
 .longweekend-controls .badges {
@@ -87,8 +91,12 @@
   min-width: 200px;
 }
 
-.reset-filters {
-  cursor: pointer;
+.form-switch .form-check-input {
+  transition: background-color 0.3s ease, transform 0.25s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+.form-switch .form-check-input:checked {
+  background-color: #0d6efd; /* blu Bootstrap */
 }
 
 .longweekend-container .filters-section {

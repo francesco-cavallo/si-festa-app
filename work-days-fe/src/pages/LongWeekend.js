@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Container, Row, Col, Spinner, Badge } from 'react-bootstrap';
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
 import 'moment/locale/it';
@@ -14,6 +13,7 @@ const LongWeekend = ({ baseURL, giorni }) => {
     const [year, setYear] = useState(new Date().getFullYear());
     const [bridgeDays, setBridgeDays] = useState(0);
     const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
     const [res, setRes] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -113,6 +113,8 @@ const LongWeekend = ({ baseURL, giorni }) => {
                     <LongWeekendFilters
                         startDate={startDate}
                         setStartDate={setStartDate}
+                        endDate={endDate}
+                        setEndDate={setEndDate}
                         bridgeDays={bridgeDays}
                         setBridgeDays={setBridgeDays}
                     />

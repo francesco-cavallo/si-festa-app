@@ -45,7 +45,8 @@ const NavBar = () => {
             >
               Weekend lunghi
             </Nav.Link>
-            <NavDropdown
+            {/* TEMPORANEAMENTE OFF */}
+            {/* <NavDropdown
                 title="Altre funzioni"
                 id="basic-nav-dropdown"
                 className={`navlink fw-medium ${isDropdownActive ? 'active' : ''}`}
@@ -57,7 +58,7 @@ const NavBar = () => {
                 <NavDropdown.Item href="/isTodayHoliday" className="fw-medium" onClick={handleClose}>
                     È festa oggi?
                 </NavDropdown.Item>
-            </NavDropdown>
+            </NavDropdown> */}
           </Nav>
         </Navbar.Collapse>
       </Container>

@@ -25,10 +25,15 @@ const LongWeekend = ({ baseURL, giorni }) => {
         setLoading(true);
         setError(null);
         try {
-            const response = await fetch(`${baseURL}/longWeekend`, {
+            const reqStartDate = startDate ?? null;
+            const reqEndDate = endDate ?? null;
+            // const response = await fetch(`${baseURL}/longWeekend`, {
+            const response = await fetch(`${baseURL}/longWeekendV3`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ year, bridgeDays })
+                body: JSON.stringify({ year, bridgeDays, 
+                    // startDate: reqStartDate, endDate: reqEndDate 
+                })
             });
             if (!response.ok) throw new Error('Errore nel caricamento dei dati');
             const data = await response.json();

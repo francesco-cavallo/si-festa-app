@@ -60,32 +60,152 @@ app.get('/countryInfo', (req, res) => {
 })
 
 // LongWeekend
-app.post('/longWeekend', (req, res) => {
-    console.log('req.body', req.body)
-    const anno = req.body.year;
-    const bridgeDays = req.body.bridgeDays;
-    let url = `${baseURL}longWeekend/${anno}/${countryCode}`;
-    if (bridgeDays === 0 || bridgeDays > 0) {
-      console.log('first')
-      url += `?availableBridgeDays=${bridgeDays}`;
+app.post('/longWeekend', async (req, res) => {
+  console.log('\nChiamo /longWeekend');
+  const { year, bridgeDays } = req.body;
+
+  let url = `${baseURL}longWeekend/${year}/${countryCode}`;
+
+  if (Number.isInteger(bridgeDays) && bridgeDays > 0) {
+    url += `?availableBridgeDays=${bridgeDays}`;
+  }
+
+  try {
+    const response = await axios.get(url, {
+      headers: { accept: 'application/json' }
+    });
+    res.send(response.data);
+  } catch (error) {
+    console.error(error.response?.data || error.message);
+    res.status(error.response?.status || 500).send(error.response?.data);
+  }
+});
+
+app.post('/longWeekendV2', async (req, res) => {
+  try {
+    const { year, startDate, endDate, bridgeDays } = req.body;
+    
+    // Se c'è solo year (caso default)
+    if (year && !startDate && !endDate) {
+      let url = `${baseURL}LongWeekend/${year}/${countryCode}`;
+      if (bridgeDays >= 0) url += `?availableBridgeDays=${bridgeDays}`;
+      const response = await axios.get(url, { headers: { accept: 'text/plain' } });
+      return res.json(response.data);
     }
-    console.log(url)
-    let config = {
-        method: 'get',
-        maxBodyLength: Infinity,
-        url,
-        headers: { 
-          'accept': 'text/plain'
-        }
-      };
-    axios.request(config)
-      .then((response) => {
-        res.send(response.data)
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-})
+
+    // Caso periodi custom
+    if (!startDate || !endDate) {
+      return res.status(400).json({ error: 'Per i periodi custom servono startDate e endDate' });
+    }
+
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    if (isNaN(start) || isNaN(end) || start > end) {
+      return res.status(400).json({ error: 'Date non valide o startDate > endDate' });
+    }
+
+    const results = [];
+
+    for (let y = start.getFullYear(); y <= end.getFullYear(); y++) {
+      let url = `${baseURL}LongWeekend/${y}/${countryCode}`;
+      if (bridgeDays >= 0) url += `?availableBridgeDays=${bridgeDays}`;
+      
+      try {
+        const response = await axios.get(url, { headers: { accept: 'text/plain' } });
+        // filtro per periodo custom
+        const filtered = response.data.filter(item => {
+          const itemStart = new Date(item.startDate);
+          const itemEnd = new Date(item.endDate);
+          return itemEnd >= start && itemStart <= end; // anche se il weekend "taglia" il periodo
+        });
+        results.push(...filtered);
+      } catch (err) {
+        console.error(`Errore per anno ${y}:`, err.message);
+      }
+    }
+
+    res.json(results);
+
+  } catch (error) {
+    console.error('Errore generico:', error);
+    res.status(500).json({ error: 'Errore interno del server' });
+  }
+});
+
+app.post('/longWeekendV3', async (req, res) => {
+  console.log('\nChiamo /longWeekendV3');
+  try {
+    const { year, startDate, endDate, bridgeDays } = req.body;
+    console.log(startDate, endDate);
+    // Caso default: anno singolo
+    if (year && !startDate && !endDate) {
+      let url = `${baseURL}LongWeekend/${year}/${countryCode}`;
+      if (bridgeDays && bridgeDays > 0) url += `?availableBridgeDays=${bridgeDays}`;
+      const response = await axios.get(url, { headers: { accept: 'text/plain' } });
+      return res.json(response.data);
+    }
+
+    // Caso periodi custom
+    if (!startDate || !endDate) {
+      return res.status(400).json({ error: 'Per i periodi custom servono startDate e endDate' });
+    }
+
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    if (isNaN(start) || isNaN(end) || start > end) {
+      return res.status(400).json({ error: 'Date non valide o startDate > endDate' });
+    }
+
+    const years = [];
+    for (let y = start.getFullYear(); y <= end.getFullYear(); y++) years.push(y);
+
+    const promises = years.map(async (y) => {
+      let url = `${baseURL}LongWeekend/${y}/${countryCode}`;
+      if (bridgeDays >= 0) url += `?availableBridgeDays=${bridgeDays}`;
+      try {
+        const response = await axios.get(url, { headers: { accept: 'text/plain' } });
+        return response.data
+          .filter(item => {
+            const itemStart = new Date(item.startDate);
+            const itemEnd = new Date(item.endDate);
+            return itemEnd >= start && itemStart <= end;
+          })
+          .map(item => {
+            const itemStart = new Date(item.startDate);
+            const itemEnd = new Date(item.endDate);
+
+            // Calcolo mesi coinvolti
+            const months = [];
+            let current = new Date(itemStart);
+            while (current <= itemEnd) {
+              months.push(current.getMonth() + 1); // Mesi 1-12
+              current.setMonth(current.getMonth() + 1);
+            }
+
+            return {
+              ...item,
+              monthsInPeriod: months.filter(m => {
+                const d = new Date(itemStart.getFullYear(), m - 1, 1);
+                return d >= start && d <= end;
+              })
+            };
+          });
+      } catch (err) {
+        console.error(`Errore per anno ${y}:`, err.message);
+        return [];
+      }
+    });
+
+    const resultsArrays = await Promise.all(promises);
+    const results = resultsArrays.flat();
+
+    res.json(results);
+
+  } catch (error) {
+    console.error('Errore generico:', error);
+    res.status(500).json({ error: 'Errore interno del server' });
+  }
+});
 
 // PublicHolidays
 app.post('/publicHolidays', (req, res) => {

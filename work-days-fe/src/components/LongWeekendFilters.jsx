@@ -11,7 +11,9 @@ const LongWeekendFilters = ({
     endDate,
     setEndDate,
     bridgeDays,
-    setBridgeDays
+    setBridgeDays,
+    workSaturday,
+    setWorkSaturday,
 }) => {
 
     const [customPeriod, setCustomPeriod] = useState(false);
@@ -56,12 +58,23 @@ const LongWeekendFilters = ({
                         <Badge className="badges mb-1 d-inline-flex align-items-center invisible">
                             placeholder
                         </Badge>
-                        {/* <Form.Label>Periodo custom</Form.Label> */}
                         <Form.Check
                             type="switch"
                             label="Periodo custom"
                             checked={customPeriod}
                             onChange={() => setCustomPeriod(!customPeriod)}
+                        />
+                    </Col>
+                    {/* Checkbox sabsati lavorativi */}
+                    <Col xs={12} md={3} className="mb-2 d-flex flex-column justify-content-center">
+                        <Badge className="badges mb-1 d-inline-flex align-items-center invisible">
+                            placeholder
+                        </Badge>
+                        <Form.Check
+                            type="switch"
+                            label="Sabato lavorativo"
+                            checked={workSaturday}
+                            onChange={() => setWorkSaturday(!workSaturday)}
                         />
                     </Col>
                     {/* Giorni ponte */}

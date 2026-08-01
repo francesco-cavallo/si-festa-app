@@ -19,6 +19,7 @@ const LongWeekend = ({ baseURL, giorni }) => {
     const [error, setError] = useState(null);
     const [expandedCards, setExpandedCards] = useState({});
     const [showFilters, setShowFilters] = useState(false);
+    const [workSaturday, setWorkSaturday] = useState(false);
     moment.locale('it');
 
     const fetchLongWeekend = async () => {
@@ -28,7 +29,8 @@ const LongWeekend = ({ baseURL, giorni }) => {
             const reqStartDate = startDate ?? null;
             const reqEndDate = endDate ?? null;
             // const response = await fetch(`${baseURL}/longWeekend`, {
-            const response = await fetch(`${baseURL}/longWeekendV3`, {
+            // const response = await fetch(`${baseURL}/longWeekendV3`, {
+            const response = await fetch(`${baseURL}/longWeekendV4`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ year, bridgeDays, 
@@ -37,7 +39,12 @@ const LongWeekend = ({ baseURL, giorni }) => {
             });
             if (!response.ok) throw new Error('Errore nel caricamento dei dati');
             const data = await response.json();
-            setRes(data);
+            if (workSaturday === false) {
+                const filtered = data.filter(weekend => weekend.dayCount != 2)
+                setRes(filtered);
+            } else {
+                setRes(data)
+            }
         } catch (err) {
             console.error(err);
             setError(err.message);
@@ -122,6 +129,8 @@ const LongWeekend = ({ baseURL, giorni }) => {
                         setEndDate={setEndDate}
                         bridgeDays={bridgeDays}
                         setBridgeDays={setBridgeDays}
+                        workSaturday={workSaturday}
+                        setWorkSaturday={setWorkSaturday}
                     />
                 </div>
             </Collapse>

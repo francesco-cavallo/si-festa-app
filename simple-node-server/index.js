@@ -4,6 +4,8 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 // API request
 const axios = require("axios");
+const { findLongWeekends } = require("./services/longWeekendService");
+const { getPublicHolidays } = require("./services/holidayService");
 
 const app = express();
 const port = 3001;
@@ -228,6 +230,44 @@ app.post("/longWeekendV3", async (req, res) => {
   }
 });
 
+app.post("/longWeekendV4", async (req, res) => {
+  try {
+    const { year, bridgeDays } = req.body;
+    const holidays = await getPublicHolidays(year);
+    const result = findLongWeekends({
+      year, maxBridgeDays: bridgeDays, holidays
+    });
+    res.json(result)
+  } catch (error) {
+    console.error(error);
+    res.status(500)
+       .json({
+          error:"Errore calcolo weekend lunghi"
+       });
+  }
+})
+app.get("/longWeekend", async (req, res) => {
+    try {
+        const year = Number(req.query.year) || new Date().getFullYear();
+        const numGiorniPonte =
+            Number(req.query.numGiorniPonte) || 0;
+        const holidays =
+            await getPublicHolidays(year);
+        const result =
+            findLongWeekends({
+                year,
+                maxBridgeDays: numGiorniPonte,
+                holidays
+            });
+        res.json(result);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            error: "Errore calcolo weekend lunghi"
+        });
+    }
+});
+
 // PublicHolidays
 app.post("/publicHolidays", (req, res) => {
   const anno = req.body.year;
@@ -245,6 +285,33 @@ app.post("/publicHolidays", (req, res) => {
     .catch((error) => {
       console.log(error);
     });
+});
+
+app.post("/publicHolidaysV2", async(req,res)=>{
+    try {
+        const {
+            year
+        } = req.body;
+        const holidays =
+            await getPublicHolidays(year);
+        res.json(holidays);
+    } catch(error) {
+        console.error(error);
+        res.status(500)
+           .json({
+              error:"Errore recupero festività"
+           });
+    }
+});
+app.get("/publicHolidays", async (req,res)=>{
+
+    const year = req.query.year || 2026;
+
+    const holidays =
+        await getPublicHolidays(year);
+
+    res.json(holidays);
+
 });
 
 // isTodayPublicHoliday

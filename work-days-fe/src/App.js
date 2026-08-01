@@ -23,16 +23,18 @@ function App() {
   ]
 
   return (
-    <>
+    <div className="app">
       <NavBar />
-      <Routes>
-        <Route path='/' element={<Homepage baseURL={baseURL} giorni={giorni} />} />
-        <Route path='/publicHolidays' element={<NationalHolidays baseURL={baseURL} giorni={giorni} />} />
-        <Route path='/longWeekends' element={<LongWeekend baseURL={baseURL} giorni={giorni} />} />
-        <Route path='/nextHolidays' element={<NextHolidays baseURL={baseURL} giorni={giorni} />} />
-      </Routes>
+      <main className="content">
+        <Routes>
+          <Route path='/' element={<Homepage baseURL={baseURL} giorni={giorni} />} />
+          <Route path='/publicHolidays' element={<NationalHolidays baseURL={baseURL} giorni={giorni} />} />
+          <Route path='/longWeekends' element={<LongWeekend baseURL={baseURL} giorni={giorni} />} />
+          <Route path='/nextHolidays' element={<NextHolidays baseURL={baseURL} giorni={giorni} />} />
+        </Routes>
+      </main>
       <Footer />
-    </>
+    </div>
   );
 }
 

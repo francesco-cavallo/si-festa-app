@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Container, Row, Col, Spinner, Badge } from 'react-bootstrap';
-import Table from 'react-bootstrap/Table';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
 import 'moment/locale/it';
+import { motion } from "framer-motion";
 import { FaRegCalendarCheck } from 'react-icons/fa';
 import './NationalHolidays.css';
 
@@ -59,8 +59,15 @@ const NationalHolidays = ({ baseURL, giorni }) => {
     <Container className="nationalholidays-container">
       <Row className="mb-4">
         <Col>
-          <h3>Feste Nazionali in Italia {year}</h3>
-          <p>Elenco delle festività italiane con giorno e data.</p>
+          <FaRegCalendarCheck size={35} className="text-primary" />
+          <div>
+            <h3 className="mb-0">
+              Festività italiane {year}
+            </h3>
+            <small className="text-muted">
+              {holidays.length} festività nazionali
+            </small>
+          </div>
         </Col>
       </Row>
 
@@ -71,8 +78,8 @@ const NationalHolidays = ({ baseURL, giorni }) => {
             onChange={date => setStartDate(date)}
             showYearPicker
             dateFormat="yyyy"
-            className="form-control"
-            aria-label="Seleziona anno"
+            className="form-control text-center fw-bold"
+            placeholderText="Seleziona anno"
           />
         </Col>
         <Col xs={12} md={3}>
@@ -100,12 +107,22 @@ const NationalHolidays = ({ baseURL, giorni }) => {
         {formattedData.length ? (
           formattedData.map((h, idx) => (
             <Col xs={12} md={6} lg={4} key={idx}>
-              <div className="nationalholidays-card">
-                <div>
-                  <h5 className="card-title">{h.nome}</h5>
-                  <p className="card-text">{h.giorno} - {h.giornoSettimana}</p>
+              <motion.div
+                  initial={{opacity:0, y:20}}
+                  animate={{opacity:1, y:0}}
+                  transition={{duration:.3}}>
+                <div className="nationalholidays-card shadow-sm">
+                  <div className="holiday-content">
+                    <h5>{h.nome}</h5>
+                    <div className="mt-2">
+                      <strong>{h.giornoSettimana}</strong>
+                      <span className="ms-2 text-muted">
+                        {h.giorno}
+                      </span>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </motion.div>
             </Col>
           ))
         ) : !loading && (

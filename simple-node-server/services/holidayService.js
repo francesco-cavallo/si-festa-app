@@ -15,7 +15,10 @@ async function getPublicHolidays(year) {
         }
     );
 
-    return response.data;
+    // Togli le feste non global (Tipo la Pentecose)
+    const filteredResp = response.data.filter(hldy => hldy.global === true);
+
+    return filteredResp;
 }
 
 

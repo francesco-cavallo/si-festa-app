@@ -21,7 +21,7 @@ const NationalHolidays = ({ baseURL, giorni }) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${baseURL}/publicHolidays`, {
+      const response = await fetch(`${baseURL}/publicHolidaysV2`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ year })

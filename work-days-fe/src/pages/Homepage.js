@@ -16,16 +16,16 @@ const Homepage = ({ baseURL, giorni }) => {
                 </p>
             </div>
             <Row className="g-4 align-items-start">
-                <Col sm={12} md={6} lg={4}>
+                <Col sm={12} md={6} lg={6}>
                     <LongWeekendsCard baseURL={baseURL}/>
                 </Col>
-                <Col sm={12} md={6} lg={4}>
+                <Col sm={12} md={6} lg={6}>
                     <CountryInfoCard baseURL={baseURL}/>
                 </Col>
-                <Col sm={12} md={6} lg={4}>
+                <Col sm={12} md={6} lg={6}>
                     <TodayHolidayCard baseURL={baseURL}/>
                 </Col>
-                <Col sm={12} md={6} lg={4}>
+                <Col sm={12} md={6} lg={6}>
                     <NextHolidayCard baseURL={baseURL} giorni={giorni}/>
                 </Col>
             </Row>

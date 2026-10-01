@@ -27,6 +27,7 @@ const LongWeekendFilters = ({
         setCustomPeriod(false);
         setEnableStartMonth(false);
         setEnableEndMonth(false);
+        setWorkSaturday(false)
     };
 
     const updateDate = (type, value, which) => {

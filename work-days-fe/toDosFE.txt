@@ -7,3 +7,5 @@
         feste tra Natale e Capodanno
     - Elenco feste nazionali farle per multi anno e a cavallo di 
         certe date - eg. tutte le feste tra Febbraio e Luglio
+
+- Fixato reset sabato lavorativo onResetFilters

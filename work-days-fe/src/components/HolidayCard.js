@@ -55,7 +55,6 @@ const HolidayCard = ({
             )}
           </Button>
         </div>
-
         {/* Contenuto espandibile */}
         <CSSTransition
           in={expanded && hasContent}

@@ -1,5 +1,5 @@
 import React from "react";
-import HolidayCard from "./HolidayCard";
+import HolidayCard from "./ExpandableHolidayCard";
 import { useNavigate } from "react-router-dom";
 import { FaPlane } from "react-icons/fa";
 
@@ -13,9 +13,10 @@ const LongWeekendsCard = () => {
   return (
     <HolidayCard
       title="Weekend lunghi"
+      // bodyText={'Scopri i prossimi ponti disponibili'}
       icon={<FaPlane/>}
       iconColor="#6f42c1"
-      buttonText="Scopri"
+      buttonText="Vedi i weekend →"
       onClick={handleClick}
       loading={false}
       btnClass="btn-longweekend"

@@ -8,6 +8,7 @@ const Footer = () => {
         <footer className='footer'>
         <Card>
             <Card.Footer>
+                © 2026 Si Festa! - 
                 Powered by <a href='https://francesco-cavallo.github.io/mio-sito-web/' rel="noopener noreferrer" target='_blank'
                     className="link-dark link-offset-1 link-opacity-50-hover link-underline-opacity-50-hover">
                     Francesco Cavallo

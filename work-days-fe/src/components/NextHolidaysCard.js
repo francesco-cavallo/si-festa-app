@@ -1,12 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaUmbrellaBeach } from "react-icons/fa";
-import HolidayCard from "./HolidayCard";
+import { useNavigate } from "react-router-dom";
+import HolidayCard from "./ExpandableHolidayCard";
 import moment from "moment";
 import "moment/locale/it";
 
-const NextHolidayCard = ({ baseURL, giorni }) => {
+const NextHolidaysCard = ({ baseURL, giorni }) => {
   const [nextHoliday, setNextHoliday] = useState(undefined);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    fetchNextHoliday();
+  }, []);
 
   const fetchNextHoliday = () => {
     setLoading(true);
@@ -24,25 +30,24 @@ const NextHolidayCard = ({ baseURL, giorni }) => {
       .finally(() => setLoading(false));
   };
 
+  const handleClick = () => {
+    navigate("/publicHolidays");
+  };
+
   return (
     <HolidayCard
-      title="La prossima festa"
+      title="Prossime festività"
+      // bodyText={'Guarda cosa arriva nei prossimi mesi'}
       icon={<FaUmbrellaBeach/>}
       iconColor={"#fd7e14"}
-      buttonText="Scopri"
-      onClick={fetchNextHoliday}
+      buttonText="Vedi calendario →"
+      onClick={handleClick}
       loading={loading}
       btnClass="btn-next"
       iconClass={"icon-longweekend"}
     >
-      {nextHoliday && (
-        <div className="fs-5">
-          🎉 <strong>{nextHoliday.localName}</strong><br />
-          <span className="text-muted">{nextHoliday.dataF} ({nextHoliday.giorno})</span>
-        </div>
-      )}
     </HolidayCard>
   );
 };
 
-export default NextHolidayCard;
+export default NextHolidaysCard;

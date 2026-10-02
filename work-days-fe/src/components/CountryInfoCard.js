@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FaFlag } from "react-icons/fa";
-import HolidayCard from "./HolidayCard";
+import HolidayCard from "./ExpandableHolidayCard";
 import { Badge } from "react-bootstrap";
 
 const CountryInfoCard = ({ baseURL }) => {

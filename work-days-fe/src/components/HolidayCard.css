@@ -3,7 +3,6 @@
 ========================= */
 .holiday-card {
   background: rgba(255, 255, 255, 0.9);
-  min-height: 100px;
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 1rem;
@@ -16,15 +15,6 @@
 .holiday-card:hover {
   transform: none !important;
   box-shadow: inherit !important; /* mantiene l’ombra originale */
-}
-
-.holiday-card .card-body {
-  display: flex;
-  flex-direction: column;
-}
-
-.holiday-card .card-body > .d-flex:first-child {
-  flex: 1;
 }
 
 /* Ombre soft colorate */
@@ -54,10 +44,6 @@
   height: 32px;
   margin-right: 0.5rem;
   transition: transform 0.3s ease, background 0.3s ease;
-}
-
-.card-title svg {
-  height: 32px;
 }
 
 .holiday-card:hover .card-title svg {

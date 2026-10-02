@@ -39,7 +39,6 @@ const HolidayCard = ({
             })}
             {title}
           </Card.Title>
-
           {/* Bottone singolo */}
           <Button
             onClick={handleToggle}

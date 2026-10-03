@@ -44,7 +44,7 @@ const NationalHolidays = ({ baseURL, giorni }) => {
   useEffect(() => {
     fetchHolidays();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [year]);
+  }, []);
 
   const formattedData = holidays.map(h => {
     const dateObj = new Date(h.date);
@@ -57,31 +57,19 @@ const NationalHolidays = ({ baseURL, giorni }) => {
 
   return (
     <Container className="nationalholidays-container">
-      <Row className="mb-4">
+      <Row className="mb-2">
         <Col>
-          <FaRegCalendarCheck size={35} className="text-primary" />
+          {/* <FaRegCalendarCheck size={35} className="text-primary" /> */}
           <div>
-            <h3 className="mb-0">
-              Festività italiane {year}
+            <h3>
+              Festività italiane
             </h3>
-            <small className="text-muted">
-              {holidays.length} festività nazionali
-            </small>
+            <p>Consulta tutte le festività nazionali dell’anno selezionato.</p>
           </div>
         </Col>
       </Row>
 
       <Row className="nationalholidays-controls mb-4">
-        <Col xs={12} md={4} className="mb-2">
-          <DatePicker
-            selected={startDate}
-            onChange={date => setStartDate(date)}
-            showYearPicker
-            dateFormat="yyyy"
-            className="form-control text-center fw-bold"
-            placeholderText="Seleziona anno"
-          />
-        </Col>
         <Col xs={12} md={3}>
           <Button
             variant="primary"
@@ -92,6 +80,17 @@ const NationalHolidays = ({ baseURL, giorni }) => {
           >
             {loading ? <Spinner animation="border" size="sm" /> : 'Mostra feste nazionali'}
           </Button>
+        </Col>
+        <Col xs={12} md={3} >
+          <DatePicker
+            selected={startDate}
+            onChange={date => setStartDate(date)}
+            showYearPicker
+            dateFormat="yyyy"
+            className="form-control text-center fw-bold"
+            placeholderText="Seleziona anno"
+            wrapperClassName="datepicker-wrapper"
+          />
         </Col>
       </Row>
 

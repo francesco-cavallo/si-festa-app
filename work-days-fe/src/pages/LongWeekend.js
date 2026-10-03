@@ -94,25 +94,25 @@ const LongWeekend = ({ baseURL, giorni }) => {
                 </Col>
             </Row>
             {/* Sezione filtri */}
-            <Row className="mb-3 align-items-center justify-content-center">
-                <Col xs="auto">
+            <Row className="longweekend-controls mb-4">
+                <Col xs={12} md={3}>
                     <Button
-                    variant="primary"
-                    onClick={fetchLongWeekend}
-                    disabled={loading}
-                    className="longweekend-btn"
-                    aria-label="Mostra weekend lunghi"
+                        variant="primary"
+                        onClick={fetchLongWeekend}
+                        disabled={loading}
+                        className="w-100 longweekend-btn"
+                        aria-label="Mostra weekend lunghi"
                     >
                     {loading ? <Spinner animation="border" size="sm" /> : "Mostra weekend lunghi"}
                     </Button>
                 </Col>
-                <Col xs="auto">
+                <Col xs={12} md={3}>
                     <Button 
                         variant="outline-secondary"
                         onClick={() => setShowFilters(!showFilters)}
                         aria-expanded={showFilters}
                         aria-controls="filters-section"
-                        className='filters-btn'
+                        className='w-100 filters-btn'
                     >
                     <BsSliders className="me-2" />
                     {showFilters ? "Nascondi filtri" : "Mostra filtri"}

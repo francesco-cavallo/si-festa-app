@@ -14,7 +14,7 @@
 
 .nationalholidays-container p {
   text-align: center;
-  margin-bottom: 2rem;
+  /* margin-bottom: 2rem; */
   color: #555;
   font-size: 1rem;
 }
@@ -119,4 +119,8 @@
   font-weight: 600;
   padding: 0.4rem 0.75rem;
   border-radius: 8px;
+}
+
+.datepicker-wrapper {
+  width: 100%;
 }

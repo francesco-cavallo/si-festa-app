@@ -21,11 +21,9 @@
 .longweekend-controls {
   display: flex;
   flex-wrap: wrap;
-  /* gap: 1rem; */
-  justify-content: space-between;
+  gap: 1rem;
+  justify-content: center;
   margin-bottom: 2rem;
-  align-items: center;
-  background-color: rgba(138, 99, 210, 0.05);
 }
 
 .form-control:disabled {

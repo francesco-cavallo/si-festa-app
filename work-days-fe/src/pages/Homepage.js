@@ -10,7 +10,7 @@ import "./Homepage.css"
 const Homepage = ({ baseURL, giorni }) => {
     return (
         <Container fluid className="py-4 homepage">
-            <div className="hero text-center mb-5">
+            <div className="hero text-center">
                 <h1 className="fw-bold">Scopri quando è festa</h1>
                 <p className="text-muted fs-5">
                     Organizza i tuoi weekend lunghi e ponti
@@ -29,9 +29,10 @@ const Homepage = ({ baseURL, giorni }) => {
                 <Col sm={12} md={12} lg={12}>
                     <UpcomingHolidaysCard baseURL={baseURL} giorni={giorni}/>
                 </Col>
-                <Col sm={12} md={12} lg={12}>
+                {/* INFO SUL PAESE VA EVOLUTA */}
+                {/* <Col sm={12} md={12} lg={12}>
                     <CountryInfoCard baseURL={baseURL}/>
-                </Col>
+                </Col> */}
             </Row>
         </Container>
     )

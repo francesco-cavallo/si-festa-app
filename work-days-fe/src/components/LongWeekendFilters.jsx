@@ -54,8 +54,9 @@ const LongWeekendFilters = ({
         <Container>
             <Row id="filters-section" className="longweekend-controls p-4 border rounded justify-content-center">
                 <Row className="align-items-center justify-content-between p-2">
+                    {/* PERIODO CUSTOM DA RIPROGETTARE */}
                     {/* Checkbox custom-period */}
-                    <Col xs={12} md={3} className="mb-2 d-flex flex-column justify-content-center">
+                    {/* <Col xs={12} md={3} className="mb-2 d-flex flex-column justify-content-center">
                         <Badge className="badges mb-1 d-inline-flex align-items-center invisible">
                             placeholder
                         </Badge>
@@ -65,7 +66,7 @@ const LongWeekendFilters = ({
                             checked={customPeriod}
                             onChange={() => setCustomPeriod(!customPeriod)}
                         />
-                    </Col>
+                    </Col> */}
                     {/* Checkbox sabsati lavorativi */}
                     <Col xs={12} md={3} className="mb-2 d-flex flex-column justify-content-center">
                         <Badge className="badges mb-1 d-inline-flex align-items-center invisible">

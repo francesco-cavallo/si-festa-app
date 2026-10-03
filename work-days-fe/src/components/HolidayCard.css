@@ -148,6 +148,30 @@
               opacity 400ms ease, transform 400ms ease;
 }
 
+.upcoming-holiday-row {
+  display: flex;
+  align-items: center;
+  padding: 0.65rem 1rem;
+  border-radius: 0.5rem;
+  background-color: #f8f9fa;
+  gap: 1rem;
+}
+
+.holiday-date {
+  flex: 0 0 180px;
+}
+
+.holiday-name {
+  flex: 1;
+  min-width: 0;
+}
+
+.holiday-days {
+  flex: 0 0 100px;
+  text-align: right;
+  white-space: nowrap;
+}
+
 /* =========================
    RESPONSIVE
 ========================= */
@@ -162,4 +186,20 @@
   .holiday-card .card-title { font-size: 1rem; }
   .holiday-card .fade-slide-content { font-size: 0.9rem; }
   .holiday-card .holiday-btn { padding: 8px 16px; min-width: 100%; }
+}
+
+@media (max-width: 576px) {
+  .upcoming-holiday-row {
+    gap: 0.5rem;
+    padding: 0.65rem 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  .holiday-date {
+    flex: 0 0 auto;
+  }
+
+  .holiday-days {
+    flex: 0 0 auto;
+  }
 }

@@ -54,7 +54,18 @@ const UpcomingHolidaysCard = ({ baseURL, giorni }) => {
         ];
       }
       // Mantieni solo le prossime 3
-      setHolidays(upcomingHolidays.slice(0, 3));
+      const nextHolidays = upcomingHolidays.slice(0, 3).map((h) => ({
+        ...h,
+
+        giorno: new Date(h.date).toLocaleDateString("it-IT", {
+          weekday: "long",
+        }),
+
+        fromToday: Math.ceil(
+          (new Date(h.date) - today) / (1000 * 60 * 60 * 24),
+        ),
+      }));
+      setHolidays(nextHolidays);
     } catch (err) {
       console.error(err);
       setError(err.message);
@@ -84,9 +95,17 @@ const UpcomingHolidaysCard = ({ baseURL, giorni }) => {
               key={index}
               className="upcoming-holiday-row d-flex align-items-center"
             >
-              <div className="holiday-date">{holiday.date}</div>
-              <div className="holiday-name flex-grow-1">{holiday.localName}</div>
-              {/* <div className="holiday-days">{holiday.days} gg</div> */}
+              <div className="holiday-date">
+                {holiday.date} - {holiday.giorno}
+              </div>
+
+              <div className="holiday-name flex-grow-1">
+                <strong>{holiday.localName}</strong>
+              </div>
+              <div className="holiday-days">
+                {holiday.fromToday}{" "}
+                {holiday.fromToday === 1 ? "giorno" : "giorni"}
+              </div>
             </div>
           ))}
         </div>
